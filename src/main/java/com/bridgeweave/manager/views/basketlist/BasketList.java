@@ -31,22 +31,6 @@ public class BasketList extends Composite<VerticalLayout> {
     private Grid<Basket> grid;
 
 
-
-    private ValueProvider<Basket, Button> createButtonRenderer() {
-        return basket -> {
-            // Create a button for each row
-            Button button = new Button("Show Details");
-
-            // Handle button click event
-            button.addClickListener(e -> {
-                String message = "Details for " + basket.getBasketName() + " " + basket.getBenchMark();
-                Notification.show(message, 3000, Notification.Position.MIDDLE);
-            });
-
-            return button;
-        };
-    }
-
     private Grid<Basket> getGrid(){
         Grid<Basket> grid = new Grid<>(Basket.class, false);
         grid.addColumn(Basket::getBasketName).setHeader("Basket Name");
@@ -55,7 +39,8 @@ public class BasketList extends Composite<VerticalLayout> {
         grid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
         grid.setWidth("100%");
         grid.getStyle().set("flex-grow", "0");
-        grid.getElement().getThemeList().add("no-border");
+        grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
+
         // Add a button column to the grid using TemplateRenderer
 
         grid.setItems(this.basketService.getAll());
@@ -68,7 +53,7 @@ public class BasketList extends Composite<VerticalLayout> {
                             Notification.show(message, 3000, Notification.Position.MIDDLE);
 
                             grid.getUI().ifPresent(ui -> ui.navigate(
-                                    BasketDetailView.class));
+                                    BasketDetailView.class,clickedItem.getId().toString()));
 
                         })
         ).setHeader("Details");
@@ -81,7 +66,7 @@ public class BasketList extends Composite<VerticalLayout> {
                             Notification.show(message, 3000, Notification.Position.MIDDLE);
 
                             grid.getUI().ifPresent(ui -> ui.navigate(
-                                    ModelPortfolioDetailView.class));
+                                    ModelPortfolioDetailView.class,clickedItem.getId().toString()));
 
                         })
         ).setHeader("Portfolio");

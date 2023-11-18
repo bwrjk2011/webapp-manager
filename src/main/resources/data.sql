@@ -117,3 +117,27 @@ insert into basket(version, id,owner_company_id, owner_company_name, basket_name
 insert into basket(version, id,owner_company_id, owner_company_name, basket_name, manager,bench_mark) values (1, 2,'1000','Investor AI','Company1.Basket 2','Peter Manager','Bench Mark2')
 insert into basket(version, id,owner_company_id, owner_company_name, basket_name, manager,bench_mark) values (1, 3,'1000','Investor AI','Company1.Basket 3','Johnny Manager','Bench Mark3')
 insert into basket(version, id,owner_company_id, owner_company_name, basket_name, manager,bench_mark) values (1, 4,'2000','Index Tracker','Company2.Basket 1','Frank Manager','Bench Mark2.1')
+--
+
+INSERT INTO model_portfolio (version, id, owner_company_id, owner_company_name, basket_id, ticker, name, allocation, rationale) VALUES (1, 1, '2000', 'Company Name 2', 3, 'TICK11', '3 Company 11', 0.1, 'Rationale 1')
+INSERT INTO model_portfolio (version, id, owner_company_id, owner_company_name, basket_id, ticker, name, allocation, rationale) VALUES (1, 2, '2000', 'Company Name 2', 3, 'TICK12', '3 Company 12', 0.1, 'Rationale 2')
+INSERT INTO model_portfolio (version, id, owner_company_id, owner_company_name, basket_id, ticker, name, allocation, rationale) VALUES (1, 3, '2000', 'Company Name 2', 3, 'TICK13', 'Company 13', 0.1, 'Rationale 3')
+INSERT INTO model_portfolio (version, id, owner_company_id, owner_company_name, basket_id, ticker, name, allocation, rationale) VALUES (1, 4, '2000', 'Company Name 2', 3, 'TICK14', 'Company 14', 0.1, 'Rationale 4')
+INSERT INTO model_portfolio (version, id, owner_company_id, owner_company_name, basket_id, ticker, name, allocation, rationale) VALUES (1, 5, '2000', 'Company Name 2', 3, 'TICK15', 'Company 15', 0.1, 'Rationale 5')
+INSERT INTO model_portfolio (version, id, owner_company_id, owner_company_name, basket_id, ticker, name, allocation, rationale) VALUES (1, 6, '2000', 'Company Name 2', 3, 'TICK16', 'Company 16', 0.1, 'Rationale 6')
+INSERT INTO model_portfolio (version, id, owner_company_id, owner_company_name, basket_id, ticker, name, allocation, rationale) VALUES (1, 7, '2000', 'Company Name 2', 3, 'TICK17', 'Company 17', 0.1, 'Rationale 7')
+INSERT INTO model_portfolio (version, id, owner_company_id, owner_company_name, basket_id, ticker, name, allocation, rationale) VALUES (1, 8, '2000', 'Company Name 2', 3, 'TICK18', 'Company 18', 0.1, 'Rationale 8')
+INSERT INTO model_portfolio (version, id, owner_company_id, owner_company_name, basket_id, ticker, name, allocation, rationale) VALUES (1, 9, '2000', 'Company Name 2', 3, 'TICK19', 'Company 19', 0.1, 'Rationale 9')
+INSERT INTO model_portfolio (version, id, owner_company_id, owner_company_name, basket_id, ticker, name, allocation, rationale) VALUES (1, 10, '2000', 'Company Name 2', 3, 'TICK110', 'Company 110', 0.1, 'Rationale 10')
+
+
+INSERT INTO model_portfolio (version, id, owner_company_id, owner_company_name, basket_id, ticker, name, allocation, rationale) VALUES (1, 11, '2000', 'Company Name 2', 4, 'TICK1', 'Company 1', 0.2, 'Rationale 1')
+INSERT INTO model_portfolio (version, id, owner_company_id, owner_company_name, basket_id, ticker, name, allocation, rationale) VALUES (1, 12, '2000', 'Company Name 2', 4, 'TICK2', 'Company 2', 0.15, 'Rationale 2')
+INSERT INTO model_portfolio (version, id, owner_company_id, owner_company_name, basket_id, ticker, name, allocation, rationale) VALUES (1, 13, '2000', 'Company Name 2', 4, 'TICK3', 'Company 3', 0.1, 'Rationale 3')
+INSERT INTO model_portfolio (version, id, owner_company_id, owner_company_name, basket_id, ticker, name, allocation, rationale) VALUES (1, 14, '2000', 'Company Name 2', 4, 'TICK4', 'Company 4', 0.25, 'Rationale 4')
+INSERT INTO model_portfolio (version, id, owner_company_id, owner_company_name, basket_id, ticker, name, allocation, rationale) VALUES (1, 15, '2000', 'Company Name 2', 4, 'TICK5', 'Company 5', 0.1, 'Rationale 5')
+INSERT INTO model_portfolio (version, id, owner_company_id, owner_company_name, basket_id, ticker, name, allocation, rationale) VALUES (1, 16, '2000', 'Company Name 2', 4, 'TICK6', 'Company 6', 0.05, 'Rationale 6')
+INSERT INTO model_portfolio (version, id, owner_company_id, owner_company_name, basket_id, ticker, name, allocation, rationale) VALUES (1, 17, '2000', 'Company Name 2', 4, 'TICK7', 'Company 7', 0.18, 'Rationale 7')
+INSERT INTO model_portfolio (version, id, owner_company_id, owner_company_name, basket_id, ticker, name, allocation, rationale) VALUES (1, 18, '2000', 'Company Name 2', 4, 'TICK8', 'Company 8', 0.12, 'Rationale 8')
+INSERT INTO model_portfolio (version, id, owner_company_id, owner_company_name, basket_id, ticker, name, allocation, rationale) VALUES (1, 19, '2000', 'Company Name 2', 4, 'TICK9', 'Company 9', 0.08, 'Rationale 9')
+INSERT INTO model_portfolio (version, id, owner_company_id, owner_company_name, basket_id, ticker, name, allocation, rationale) VALUES (1, 20, '2000', 'Company Name 2', 4, 'TICK10', 'Company 10', 0.22, 'Rationale 10')

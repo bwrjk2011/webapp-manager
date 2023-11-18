@@ -162,14 +162,14 @@ public class MainLayout extends AppLayout {
                 new MenuItemInfo("Home", LineAwesomeIcon.CHART_AREA_SOLID.create(), HomeView.class), //
                 new MenuItemInfo("BasketList",LineAwesomeIcon.BABY_CARRIAGE_SOLID.create(),BasketList.class),
 
-                new MenuItemInfo("Baskets2", LineAwesomeIcon.BRIEFCASE_SOLID.create(), Baskets2View.class), //
-
-                new MenuItemInfo("Basket Detail", LineAwesomeIcon.USER.create(), BasketDetailView.class), //
-
-                new MenuItemInfo("Wrapper", LineAwesomeIcon.PENCIL_RULER_SOLID.create(), WrapperView.class), //
-
-                new MenuItemInfo("Model Portfolio Detail", LineAwesomeIcon.FILTER_SOLID.create(),
-                        ModelPortfolioDetailView.class), //
+//                new MenuItemInfo("Baskets2", LineAwesomeIcon.BRIEFCASE_SOLID.create(), Baskets2View.class), //
+//
+//                new MenuItemInfo("Basket Detail", LineAwesomeIcon.USER.create(), BasketDetailView.class), //
+//
+//                new MenuItemInfo("Wrapper", LineAwesomeIcon.PENCIL_RULER_SOLID.create(), WrapperView.class), //
+//
+//                new MenuItemInfo("Model Portfolio Detail", LineAwesomeIcon.FILTER_SOLID.create(),
+//                        ModelPortfolioDetailView.class), //
 
                 new MenuItemInfo("Hello World", LineAwesomeIcon.GLOBE_SOLID.create(), HelloWorldView.class), //
 

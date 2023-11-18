@@ -28,30 +28,31 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
 import com.vaadin.flow.theme.lumo.LumoUtility;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Expression;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.List;
+import jakarta.persistence.criteria.*;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @PageTitle("Model Portfolio Detail")
-@Route(value = "model-portfolio-detail", layout = MainLayout.class)
+@Route(value = "model-portfolio-detail-orig", layout = MainLayout.class)
 @AnonymousAllowed
 @Uses(Icon.class)
-public class ModelPortfolioDetailView extends Div implements HasUrlParameter<String>  {
+public class ModelPortfolioDetailViewOrig extends Div implements HasUrlParameter<String>  {
 
     @Override
-    public void setParameter(BeforeEvent beforeEvent, String event) {
-        System.out.println(event);
+    public void setParameter(BeforeEvent beforeEvent, String s) {
+
     }
+
+
     private Grid<SamplePerson> grid;
+
     private Filters filters;
     private final SamplePersonService samplePersonService;
-    public ModelPortfolioDetailView(SamplePersonService SamplePersonService)  {
+
+    public ModelPortfolioDetailViewOrig(SamplePersonService SamplePersonService)  {
         this.samplePersonService = SamplePersonService;
         setSizeFull();
         addClassNames("model-portfolio-detail-view");

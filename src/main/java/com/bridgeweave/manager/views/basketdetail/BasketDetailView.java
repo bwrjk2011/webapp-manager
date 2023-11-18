@@ -1,5 +1,6 @@
 package com.bridgeweave.manager.views.basketdetail;
 
+import ch.qos.logback.core.encoder.EchoEncoder;
 import com.bridgeweave.manager.components.pricefield.PriceField;
 import com.bridgeweave.manager.views.MainLayout;
 import com.vaadin.flow.component.Composite;
@@ -17,6 +18,8 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.router.BeforeEvent;
+import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
@@ -28,7 +31,17 @@ import java.util.List;
 @Route(value = "basket-detail", layout = MainLayout.class)
 @AnonymousAllowed
 @Uses(Icon.class)
-public class BasketDetailView extends Composite<VerticalLayout> {
+public class BasketDetailView extends Composite<VerticalLayout> implements HasUrlParameter<String> {
+    @Override
+    public void setParameter(BeforeEvent beforeEvent, String s) {
+        try{
+            System.out.println(s);
+        } catch (Exception e) {
+            System.out.print(e);
+        }
+
+    }
+
 
     public BasketDetailView() {
         VerticalLayout layoutColumn2 = new VerticalLayout();
@@ -61,7 +74,7 @@ public class BasketDetailView extends Composite<VerticalLayout> {
         layoutColumn2.setWidth("100%");
         layoutColumn2.setMaxWidth("800px");
         layoutColumn2.setHeight("min-content");
-        h3.setText("Personal Information");
+        h3.setText("Basket Information");
         h3.setWidth("100%");
         formLayout2Col.setWidth("100%");
         textField.setLabel("First Name");
@@ -139,6 +152,7 @@ public class BasketDetailView extends Composite<VerticalLayout> {
         layoutRow4.add(buttonPrimary);
         layoutRow4.add(buttonSecondary);
     }
+
 
     record SampleItem(String value, String label, Boolean disabled) {
     }
