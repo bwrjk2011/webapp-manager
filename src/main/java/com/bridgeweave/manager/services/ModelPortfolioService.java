@@ -51,6 +51,12 @@ public class ModelPortfolioService {
         return (ArrayList<ModelPortfolio>) repository.findAll();
     }
 
+    public ArrayList<ModelPortfolio> getByBid(String basketId){
+        return (ArrayList<ModelPortfolio>) repository.findByBid(basketId);
+    }
+
+
+
     public int count() {
         return (int) repository.count();
     }

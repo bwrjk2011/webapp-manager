@@ -1,6 +1,8 @@
 package com.bridgeweave.manager.views.modelportfoliodetail;
 
+import com.bridgeweave.manager.data.ModelPortfolio;
 import com.bridgeweave.manager.data.SamplePerson;
+import com.bridgeweave.manager.services.ModelPortfolioService;
 import com.bridgeweave.manager.services.SamplePersonService;
 import com.bridgeweave.manager.views.MainLayout;
 import com.vaadin.flow.component.Component;
@@ -44,20 +46,30 @@ import org.springframework.data.jpa.domain.Specification;
 @Uses(Icon.class)
 public class ModelPortfolioDetailView extends Div implements HasUrlParameter<String>  {
 
+    private String basketId;
+
     @Override
     public void setParameter(BeforeEvent beforeEvent, String event) {
+        basketId = event;
         System.out.println(event);
+        if (basketId != null){
+            grid.setItems(modelPortfolioService.getByBid(basketId));
+        }
     }
-    private Grid<SamplePerson> grid;
+    private Grid<ModelPortfolio> grid;
     private Filters filters;
-    private final SamplePersonService samplePersonService;
-    public ModelPortfolioDetailView(SamplePersonService SamplePersonService)  {
-        this.samplePersonService = SamplePersonService;
+    private final ModelPortfolioService modelPortfolioService;
+    public ModelPortfolioDetailView(ModelPortfolioService modelPortfolioService)  {
+        this.modelPortfolioService = modelPortfolioService;
+        System.out.println("Hi");
+        System.out.println(basketId);
+
         setSizeFull();
         addClassNames("model-portfolio-detail-view");
 
         filters = new Filters(() -> refreshGrid());
-        VerticalLayout layout = new VerticalLayout(createMobileFilters(), filters, createGrid());
+//        VerticalLayout layout = new VerticalLayout(createMobileFilters(), filters, createGrid());
+        VerticalLayout layout = new VerticalLayout(createGrid());
         layout.setSizeFull();
         layout.setPadding(false);
         layout.setSpacing(false);
@@ -224,18 +236,20 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Str
     }
 
     private Component createGrid() {
-        grid = new Grid<>(SamplePerson.class, false);
-        grid.addColumn("firstName").setAutoWidth(true);
-        grid.addColumn("lastName").setAutoWidth(true);
-        grid.addColumn("email").setAutoWidth(true);
-        grid.addColumn("phone").setAutoWidth(true);
-        grid.addColumn("dateOfBirth").setAutoWidth(true);
-        grid.addColumn("occupation").setAutoWidth(true);
-        grid.addColumn("role").setAutoWidth(true);
+        grid = new Grid<>(ModelPortfolio.class, false);
+        grid.addColumn("bid").setAutoWidth(true);
+        grid.addColumn("ticker").setAutoWidth(true);
+        grid.addColumn("name").setAutoWidth(true);
+        grid.addColumn("allocation").setAutoWidth(true);
 
-        grid.setItems(query -> samplePersonService.list(
-                PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query)),
-                filters).stream());
+//        grid.setItems(query -> samplePersonService.list(
+//                PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query)),
+//                filters).stream());
+//
+        if (basketId != null){
+            grid.setItems(modelPortfolioService.getByBid(basketId));
+        }
+
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         grid.addClassNames(LumoUtility.Border.TOP, LumoUtility.BorderColor.CONTRAST_10);
 
@@ -244,6 +258,7 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Str
 
     private void refreshGrid() {
         grid.getDataProvider().refreshAll();
+
     }
 
 }

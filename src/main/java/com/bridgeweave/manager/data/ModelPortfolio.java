@@ -1,13 +1,21 @@
 package com.bridgeweave.manager.data;
 
 import jakarta.persistence.Entity;
-import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 public class ModelPortfolio extends AbstractEntity{
     private String ownerCompanyId;
     private String ownerCompanyName;
-    private String basket_id ;
+    private String bid;
+
+    public String getBid() {
+        return bid;
+    }
+
+    public void setBid(String bid) {
+        this.bid = bid;
+    }
+
     private String ticker;
     private String name;
     private Long allocation;
@@ -61,13 +69,6 @@ public class ModelPortfolio extends AbstractEntity{
         this.rationale = rationale;
     }
 
-    public String getBasket_id() {
-        return basket_id;
-    }
-
-    public void setBasket_id(String basket_id) {
-        this.basket_id = basket_id;
-    }
 
 
 
