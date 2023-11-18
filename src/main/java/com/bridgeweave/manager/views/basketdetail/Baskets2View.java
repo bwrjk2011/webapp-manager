@@ -1,11 +1,11 @@
-package com.bridgeweave.manager.views.baskets2;
+package com.bridgeweave.manager.views.basketdetail;
 
 import com.bridgeweave.manager.data.SamplePerson;
 import com.bridgeweave.manager.services.SamplePersonService;
 import com.bridgeweave.manager.views.MainLayout;
-import com.vaadin.collaborationengine.CollaborationAvatarGroup;
-import com.vaadin.collaborationengine.CollaborationBinder;
-import com.vaadin.collaborationengine.UserInfo;
+//import com.vaadin.collaborationengine.CollaborationAvatarGroup;
+//import com.vaadin.collaborationengine.CollaborationBinder;
+//import com.vaadin.collaborationengine.UserInfo;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -23,7 +23,6 @@ import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.data.renderer.LitRenderer;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
@@ -32,7 +31,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
 import jakarta.annotation.security.RolesAllowed;
 import java.util.Optional;
-import java.util.UUID;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
@@ -47,7 +46,7 @@ public class Baskets2View extends Div implements BeforeEnterObserver {
 
     private final Grid<SamplePerson> grid = new Grid<>(SamplePerson.class, false);
 
-    CollaborationAvatarGroup avatarGroup;
+//    CollaborationAvatarGroup avatarGroup;
 
     private TextField firstName;
     private TextField lastName;
@@ -61,7 +60,7 @@ public class Baskets2View extends Div implements BeforeEnterObserver {
     private final Button cancel = new Button("Cancel");
     private final Button save = new Button("Save");
 
-    private final CollaborationBinder<SamplePerson> binder;
+//    private final CollaborationBinder<SamplePerson> binder;
 
     private SamplePerson samplePerson;
 
@@ -77,13 +76,13 @@ public class Baskets2View extends Div implements BeforeEnterObserver {
         // identifier, and the user's real name. You can also provide the users
         // avatar by passing an url to the image as a third parameter, or by
         // configuring an `ImageProvider` to `avatarGroup`.
-        UserInfo userInfo = new UserInfo(UUID.randomUUID().toString(), "Steve Lange");
+//        UserInfo userInfo = new UserInfo(UUID.randomUUID().toString(), "Steve Lange");
 
         // Create UI
         SplitLayout splitLayout = new SplitLayout();
 
-        avatarGroup = new CollaborationAvatarGroup(userInfo, null);
-        avatarGroup.getStyle().set("visibility", "hidden");
+//        avatarGroup = new CollaborationAvatarGroup(userInfo, null);
+//        avatarGroup.getStyle().set("visibility", "hidden");
 
         createGridLayout(splitLayout);
         createEditorLayout(splitLayout);
@@ -123,11 +122,11 @@ public class Baskets2View extends Div implements BeforeEnterObserver {
         });
 
         // Configure Form
-        binder = new CollaborationBinder<>(SamplePerson.class, userInfo);
-
-        // Bind fields. This is where you'd define e.g. validation rules
-
-        binder.bindInstanceFields(this);
+//        binder = new CollaborationBinder<>(SamplePerson.class, userInfo);
+//
+//        // Bind fields. This is where you'd define e.g. validation rules
+//
+//        binder.bindInstanceFields(this);
 
         cancel.addClickListener(e -> {
             clearForm();
@@ -139,7 +138,7 @@ public class Baskets2View extends Div implements BeforeEnterObserver {
                 if (this.samplePerson == null) {
                     this.samplePerson = new SamplePerson();
                 }
-                binder.writeBean(this.samplePerson);
+//                binder.writeBean(this.samplePerson);
                 samplePersonService.update(this.samplePerson);
                 clearForm();
                 refreshGrid();
@@ -150,7 +149,7 @@ public class Baskets2View extends Div implements BeforeEnterObserver {
                         "Error updating the data. Somebody else has updated the record while you were making changes.");
                 n.setPosition(Position.MIDDLE);
                 n.addThemeVariants(NotificationVariant.LUMO_ERROR);
-            } catch (ValidationException validationException) {
+            } catch (Exception validationException) {
                 Notification.show("Failed to update the data. Check again that all values are valid");
             }
         });
@@ -194,7 +193,7 @@ public class Baskets2View extends Div implements BeforeEnterObserver {
         important = new Checkbox("Important");
         formLayout.add(firstName, lastName, email, phone, dateOfBirth, occupation, role, important);
 
-        editorDiv.add(avatarGroup, formLayout);
+//        editorDiv.add(avatarGroup, formLayout);
         createButtonLayout(editorLayoutDiv);
 
         splitLayout.addToSecondary(editorLayoutDiv);
@@ -230,12 +229,12 @@ public class Baskets2View extends Div implements BeforeEnterObserver {
         String topic = null;
         if (this.samplePerson != null && this.samplePerson.getId() != null) {
             topic = "samplePerson/" + this.samplePerson.getId();
-            avatarGroup.getStyle().set("visibility", "visible");
+//            avatarGroup.getStyle().set("visibility", "visible");
         } else {
-            avatarGroup.getStyle().set("visibility", "hidden");
+//            avatarGroup.getStyle().set("visibility", "hidden");
         }
-        binder.setTopic(topic, () -> this.samplePerson);
-        avatarGroup.setTopic(topic);
+//        binder.setTopic(topic, () -> this.samplePerson);
+//        avatarGroup.setTopic(topic);
 
     }
 }

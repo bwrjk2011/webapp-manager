@@ -17,6 +17,12 @@ public class User extends AbstractEntity {
 
     private String username;
     private String name;
+
+    private String ownerCompanyId;
+
+
+    private String company;
+
     @JsonIgnore
     private String hashedPassword;
     @Enumerated(EnumType.STRING)
@@ -55,6 +61,24 @@ public class User extends AbstractEntity {
     }
     public void setProfilePicture(byte[] profilePicture) {
         this.profilePicture = profilePicture;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+
+
+    public String getOwnerCompanyId() {
+        return ownerCompanyId;
+    }
+
+    public void setOwnerCompanyId(String ownerCompanyId) {
+        this.ownerCompanyId = ownerCompanyId;
     }
 
 }

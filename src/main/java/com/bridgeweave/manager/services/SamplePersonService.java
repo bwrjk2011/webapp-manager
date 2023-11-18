@@ -2,6 +2,8 @@ package com.bridgeweave.manager.services;
 
 import com.bridgeweave.manager.data.SamplePerson;
 import com.bridgeweave.manager.data.SamplePersonRepository;
+
+import java.util.ArrayList;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,6 +37,10 @@ public class SamplePersonService {
 
     public Page<SamplePerson> list(Pageable pageable, Specification<SamplePerson> filter) {
         return repository.findAll(filter, pageable);
+    }
+
+    public ArrayList<SamplePerson> getAll(){
+        return (ArrayList<SamplePerson>) repository.findAll();
     }
 
     public int count() {
