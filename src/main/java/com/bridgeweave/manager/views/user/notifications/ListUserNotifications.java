@@ -14,13 +14,14 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AccessAnnotationChecker;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
+import jakarta.annotation.security.RolesAllowed;
 
 import java.util.List;
 import java.util.Optional;
 
 @PageTitle("User Notifications")
 @Route(value = "notifications", layout = MainLayout.class)
-@AnonymousAllowed
+@RolesAllowed("USER")
 @Uses(Icon.class)
 public class ListUserNotifications extends VerticalLayout {
 

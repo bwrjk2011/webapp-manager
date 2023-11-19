@@ -21,10 +21,11 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
+import jakarta.annotation.security.RolesAllowed;
 
 @PageTitle("BasketList")
 @Route(value = "basket-list", layout = MainLayout.class)
-@AnonymousAllowed
+@RolesAllowed("USER")
 @Uses(Icon.class)
 public class BasketList extends Composite<VerticalLayout> {
     private BasketService basketService;

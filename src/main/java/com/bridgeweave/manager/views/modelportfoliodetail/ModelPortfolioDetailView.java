@@ -37,6 +37,7 @@ import com.vaadin.flow.server.auth.AccessAnnotationChecker;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
 import com.vaadin.flow.theme.lumo.LumoUtility;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Expression;
@@ -57,7 +58,7 @@ import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer;
 
 @PageTitle("Model Portfolio Detail")
 @Route(value = "model-portfolio-detail", layout = MainLayout.class)
-@AnonymousAllowed
+@RolesAllowed("USER")
 @Uses(Icon.class)
 public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Long>  {
 

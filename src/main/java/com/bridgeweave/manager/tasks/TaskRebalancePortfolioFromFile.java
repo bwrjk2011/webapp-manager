@@ -1,17 +1,16 @@
 package com.bridgeweave.manager.tasks;
 
+import com.bridgeweave.manager.data.ModelPortfolio;
 import com.bridgeweave.manager.data.UserNotifications;
 import com.bridgeweave.manager.services.ModelPortfolioService;
 import com.bridgeweave.manager.services.UserNotificationService;
+import com.helger.commons.collection.impl.ICommonsList;
+import com.helger.commons.csv.CSVReader;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -36,13 +35,35 @@ public class TaskRebalancePortfolioFromFile  {
             // Simulate some processing time
             System.out.println("Sleeping");
 
-            //  Step1.  Remove existing tickers
+            //  Step1.  Remove existing tickers - working
             System.out.println("About to Delete Tickets for basketId " + basketId);
             modelPortfolioService.deleteTicketsForBasketIt(basketId);
 
             //  Step2.  Process File
-            System.out.println("About to Delete Tickets for basketId " + basketId);
-            modelPortfolioService.deleteTicketsForBasketIt(basketId);
+            System.out.println("About to Read File and process ticker Ids for basketId " + basketId);
+            try (CSVReader csvReader = new CSVReader(new FileReader(filename))) {
+                ICommonsList<ICommonsList<String>> rows = csvReader.readAll();
+
+                // Assuming the first row is a header, so start from index 1
+                for (int i = 1; i < rows.size(); i++) {
+                    ICommonsList<String> row = rows.get(i);
+
+                    // Assuming row[0] is ticker id and row[1] is the allocation as a string
+                    String tickerId = row.get(0);
+                    Long allocation = Long.parseLong(row.get(1));
+
+                    // Create ModelPortfolio object
+                    ModelPortfolio modelPortfolio = new ModelPortfolio();
+                    modelPortfolio.setBid(basketId);
+                    modelPortfolio.setTicker(tickerId);
+                    modelPortfolio.setAllocation(allocation);
+                    modelPortfolioService.update(modelPortfolio);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
 
             //  Step3. Send Notification with Results
             UserNotifications un = new UserNotifications(String.valueOf(userId),"someMessage");
@@ -55,24 +76,7 @@ public class TaskRebalancePortfolioFromFile  {
 
 
         //        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-//            String line;
-//
-//            while ((line = reader.readLine()) != null) {
-//                //  Update JPA object (replace with your logic)
-//                BasketEntity basket = entityManager.find(BasketEntity.class, basketId);
-//                basket.addLine(line); // Assume BasketEntity has a method to add a line
-//
-//                UserNotifications un = new UserNotifications(String.valueOf(userId),"someMessage");
-//                userNotificationService.update(un);
-//                // Update UI
-////                UI.getCurrent().access(() -> {
-////                    // Update UI components as needed
-////                    // For example, notify the user about the progress
-////                });
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+
     }
 
     public void startAsyncTask(Long userId, Long basketId, String filename) {
