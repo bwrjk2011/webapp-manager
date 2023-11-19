@@ -9,6 +9,7 @@ import com.bridgeweave.manager.views.basketlist.BasketList;
 import com.bridgeweave.manager.views.helloworld.HelloWorldView;
 import com.bridgeweave.manager.views.home.HomeView;
 import com.bridgeweave.manager.views.modelportfoliodetail.ModelPortfolioDetailView;
+import com.bridgeweave.manager.views.user.notifications.ListUserNotifications;
 import com.bridgeweave.manager.views.wrapper.WrapperView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -137,11 +138,14 @@ public class MainLayout extends AppLayout {
         if (maybeUser.isPresent()) {
             User user = maybeUser.get();
 
-//            Hack job rk
+//            Hack job rjk
             Integer notificationCount = 3;
             badge = new Span(String.valueOf(notificationCount));
             badge.getElement().getThemeList().add("badge");
-
+            badge.addClickListener(spanClickEvent -> {
+                badge.getUI().ifPresent(ui -> ui.navigate(
+                        ListUserNotifications.class));
+            });
 
             Avatar avatar = new Avatar(user.getName());
             StreamResource resource = new StreamResource("profile-pic",
@@ -163,8 +167,12 @@ public class MainLayout extends AppLayout {
             div.getElement().getStyle().set("align-items", "center");
             div.getElement().getStyle().set("gap", "var(--lumo-space-s)");
             userName.add(div);
-            userName.getSubMenu().addItem("Settings", e -> {
+            userName.getSubMenu().addItem("Admin", e -> {
                 authenticatedUser.logout();
+            });
+            userName.getSubMenu().addItem("Notifications", e -> {
+                userName.getUI().ifPresent(ui -> ui.navigate(
+                        ListUserNotifications.class));
             });
             userName.getSubMenu().addItem("Sign out", e -> {
                 authenticatedUser.logout();
@@ -198,6 +206,7 @@ public class MainLayout extends AppLayout {
         return new MenuItemInfo[]{ //
                 new MenuItemInfo("Home", LineAwesomeIcon.CHART_AREA_SOLID.create(), HomeView.class), //
                 new MenuItemInfo("BasketList",LineAwesomeIcon.BABY_CARRIAGE_SOLID.create(),BasketList.class),
+                new MenuItemInfo("User Notifications",LineAwesomeIcon.BABY_CARRIAGE_SOLID.create(), ListUserNotifications.class),
 
 //                new MenuItemInfo("Baskets2", LineAwesomeIcon.BRIEFCASE_SOLID.create(), Baskets2View.class), //
 //
