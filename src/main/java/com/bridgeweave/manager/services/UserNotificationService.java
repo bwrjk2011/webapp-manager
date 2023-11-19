@@ -1,7 +1,5 @@
 package com.bridgeweave.manager.services;
 
-import com.bridgeweave.manager.data.Basket;
-import com.bridgeweave.manager.data.BasketRepository;
 import com.bridgeweave.manager.data.UserNotificationRepository;
 import com.bridgeweave.manager.data.UserNotifications;
 import org.springframework.data.domain.Page;
@@ -48,9 +46,15 @@ public class UserNotificationService {
         return (ArrayList<UserNotifications>) repository.findAll();
     }
 
-    public ArrayList<UserNotifications> getAllUnSeenNotifications(){
-        return (ArrayList<UserNotifications>) repository.findAll();
+    public  List<UserNotifications> getAllUnSeenNotifications(Long userId){
+        List<UserNotifications> unseenNotificationsForUser = repository.getUnseenNotificationsForUser(userId);
+        System.out.println(unseenNotificationsForUser);
+
+        return unseenNotificationsForUser;
     }
+
+
+
 
     public Integer getAllUnSeenNotificationsCount(){
         return 10;
