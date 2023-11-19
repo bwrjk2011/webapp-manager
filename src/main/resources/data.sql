@@ -141,3 +141,15 @@ INSERT INTO model_portfolio (version, id, owner_company_id, owner_company_name, 
 INSERT INTO model_portfolio (version, id, owner_company_id, owner_company_name, bid, ticker, name, allocation, rationale) VALUES (1, 18, '2000', 'Company Name 2', 4, 'TICK8', 'Company 8', 0.12, 'Rationale 8')
 INSERT INTO model_portfolio (version, id, owner_company_id, owner_company_name, bid, ticker, name, allocation, rationale) VALUES (1, 19, '2000', 'Company Name 2', 4, 'TICK9', 'Company 9', 0.08, 'Rationale 9')
 INSERT INTO model_portfolio (version, id, owner_company_id, owner_company_name, bid, ticker, name, allocation, rationale) VALUES (1, 20, '2000', 'Company Name 2', 4, 'TICK10', 'Company 10', 0.22, 'Rationale 10')
+
+
+-- Example SQL statements to insert data into user_notification table with notification_type as "rebalance"
+-- Example SQL statements with id and version columns for user_notifications
+INSERT INTO user_notifications (id, version, user_id, created_date, notification_type, message, success_code, has_been_seen) VALUES (1, 1, 2, '2023-01-01', 'rebalance', 'Portfolios have been rebalanced successfully.', 'success', false)
+INSERT INTO user_notifications (id, version, user_id, created_date, notification_type, message, success_code, has_been_seen) VALUES (2, 1, 2, '2023-01-02', 'rebalance', 'Failed to rebalance portfolios. Please check your settings.', 'failure', true)
+INSERT INTO user_notifications (id, version, user_id, created_date, notification_type, message, success_code, has_been_seen) VALUES (3, 1, 2, '2023-01-03', 'rebalance', 'Portfolios rebalanced successfully for the current quarter.', 'success', false)
+INSERT INTO user_notifications (id, version, user_id, created_date, notification_type, message, success_code, has_been_seen) VALUES (4, 1, 2, '2023-01-04', 'rebalance', 'Failed to rebalance portfolios. An unexpected error occurred.', 'failure', true)
+INSERT INTO user_notifications (id, version, user_id, created_date, notification_type, message, success_code, has_been_seen) VALUES (5, 1, 2, '2023-01-05', 'rebalance', 'Portfolios have been successfully rebalanced according to your preferences.', 'success', false)
+INSERT INTO user_notifications (id, version, user_id, created_date, notification_type, message, success_code, has_been_seen) VALUES (6, 1, 2, '2023-01-06', 'rebalance', 'Failed to rebalance portfolios. Insufficient data available.', 'failure', true)
+INSERT INTO user_notifications (id, version, user_id, created_date, notification_type, message, success_code, has_been_seen) VALUES (7, 1, 2, '2023-01-07', 'rebalance', 'Quarterly rebalancing completed successfully.', 'success', false)
+INSERT INTO user_notifications (id, version, user_id, created_date, notification_type, message, success_code, has_been_seen) VALUES (8, 1, 2, '2023-01-08', 'rebalance', 'Failed to rebalance portfolios. Unexpected market conditions.', 'failure', true)

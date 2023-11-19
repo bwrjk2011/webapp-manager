@@ -257,7 +257,7 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Str
 
     private void openConfirmationDialog() {
          confirmDialog = new ConfirmDialog("Confirmation",
-                "Do you really want to proceed with the rebalance?",
+                "Proceed with the rebalance and update Portfolio definitions?",
                 "Yes", // Text for the confirm button
                 event -> {
                     // User clicked "Yes", perform the action

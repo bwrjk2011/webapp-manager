@@ -11,7 +11,7 @@ public class UserNotifications extends AbstractEntity{
     private Date createdDate;
     private String notificationType;
     private String message;
-    private String succesCode;
+    private String successCode;
     private Boolean hasBeenSeen;
 
     public String getUserId() {
@@ -47,11 +47,11 @@ public class UserNotifications extends AbstractEntity{
     }
 
     public String getSuccesCode() {
-        return succesCode;
+        return successCode;
     }
 
-    public void setSuccesCode(String succesCode) {
-        this.succesCode = succesCode;
+    public void setSuccesCode(String successCode) {
+        this.successCode = successCode;
     }
 
     public Boolean getHasBeenSeen() {
