@@ -1,5 +1,7 @@
 package com.bridgeweave.manager.tasks;
 
+import com.bridgeweave.manager.data.UserNotifications;
+import com.bridgeweave.manager.services.UserNotificationService;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -14,6 +16,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class TaskRebalancePortfolioFromFile  {
+    private final UserNotificationService userNotificationService;
+
     private ExecutorService executorService = Executors.newFixedThreadPool(5);
 
 
@@ -29,7 +33,11 @@ public class TaskRebalancePortfolioFromFile  {
         try {
             // Simulate some processing time
             System.out.println("Sleeping");
-            Thread.sleep(10000);
+            Thread.sleep(2000);
+
+            UserNotifications un = new UserNotifications(String.valueOf(userId),"someMessage");
+            userNotificationService.update(un);
+            System.out.println("Check Notification DB!!!");
             System.out.println("Awake");
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -68,6 +76,8 @@ public class TaskRebalancePortfolioFromFile  {
 
 
 
-
+    public TaskRebalancePortfolioFromFile(UserNotificationService userNotificationService){
+        this.userNotificationService = userNotificationService;
+    }
 
 }

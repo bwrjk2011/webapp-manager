@@ -6,6 +6,7 @@ import com.bridgeweave.manager.data.User;
 import com.bridgeweave.manager.security.AuthenticatedUser;
 import com.bridgeweave.manager.services.ModelPortfolioService;
 import com.bridgeweave.manager.services.SamplePersonService;
+import com.bridgeweave.manager.services.UserNotificationService;
 import com.bridgeweave.manager.tasks.TaskRebalancePortfolioFromFile;
 import com.bridgeweave.manager.views.MainLayout;
 import com.vaadin.flow.component.Component;
@@ -64,6 +65,7 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Str
 
     private AuthenticatedUser authenticatedUser;
     private AccessAnnotationChecker accessChecker;
+    private UserNotificationService userNotificationService;
     private User user;
 
     private Grid<ModelPortfolio> grid;
@@ -268,7 +270,7 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Str
                 "Proceed with the rebalance and update Portfolio definitions?",
                 "Yes",
                 event -> {
-                    new TaskRebalancePortfolioFromFile().startAsyncTask(userId,basketId,filePath);
+                    new TaskRebalancePortfolioFromFile(userNotificationService).startAsyncTask(userId,basketId,filePath);
                     confirmDialog.close();
                 },
                 "No",
@@ -355,11 +357,13 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Str
     public ModelPortfolioDetailView(
             AuthenticatedUser authenticatedUser,
             AccessAnnotationChecker accessChecker,
-            ModelPortfolioService modelPortfolioService)  {
+            ModelPortfolioService modelPortfolioService,
+            UserNotificationService userNotificationService)  {
 
         this.modelPortfolioService = modelPortfolioService;
         this.authenticatedUser = authenticatedUser;
         this.accessChecker = accessChecker;
+        this.userNotificationService = userNotificationService;
         Optional<User> maybeUser = authenticatedUser.get();
         if (maybeUser.isPresent()) {
             user = maybeUser.get();

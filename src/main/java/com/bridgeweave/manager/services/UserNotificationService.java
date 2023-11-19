@@ -55,11 +55,6 @@ public class UserNotificationService {
 
 
 
-
-    public Integer getAllUnSeenNotificationsCount(){
-        return 10;
-    }
-
     public int count() {
         return (int) repository.count();
     }
