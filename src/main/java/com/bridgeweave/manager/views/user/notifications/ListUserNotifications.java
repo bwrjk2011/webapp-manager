@@ -9,6 +9,7 @@ import com.vaadin.flow.component.dependency.Uses;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.data.provider.SortDirection;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AccessAnnotationChecker;
@@ -44,7 +45,9 @@ public class ListUserNotifications extends VerticalLayout {
             Long userId = user.getId();
             System.out.println("Getting user notifications for user id " + userId);
             List<UserNotifications> userNotifications = userNotificationService.getAllUnSeenNotifications(userId);
+
             grid.setItems(userNotifications);
+            grid.setAllRowsVisible(true);
         }
 
         add(grid);

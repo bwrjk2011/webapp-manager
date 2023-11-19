@@ -2,6 +2,8 @@ package com.bridgeweave.manager.views.modelportfoliodetail;
 
 import com.bridgeweave.manager.data.ModelPortfolio;
 import com.bridgeweave.manager.data.SamplePerson;
+import com.bridgeweave.manager.data.User;
+import com.bridgeweave.manager.security.AuthenticatedUser;
 import com.bridgeweave.manager.services.ModelPortfolioService;
 import com.bridgeweave.manager.services.SamplePersonService;
 import com.bridgeweave.manager.tasks.TaskRebalancePortfolioFromFile;
@@ -30,6 +32,7 @@ import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.auth.AccessAnnotationChecker;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
 import com.vaadin.flow.theme.lumo.LumoUtility;
@@ -44,6 +47,8 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import com.vaadin.flow.component.upload.Upload;
@@ -57,6 +62,9 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Str
 
     private String basketId;
 
+    private AuthenticatedUser authenticatedUser;
+    private AccessAnnotationChecker accessChecker;
+    private User user;
 
     private Grid<ModelPortfolio> grid;
     private Filters filters;
@@ -255,17 +263,15 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Str
     }
 
 
-    private void openConfirmationDialog() {
+    private void openConfirmationDialog(Long userId, String basketId, String filePath) {
          confirmDialog = new ConfirmDialog("Confirmation",
                 "Proceed with the rebalance and update Portfolio definitions?",
-                "Yes", // Text for the confirm button
+                "Yes",
                 event -> {
-                    // User clicked "Yes", perform the action
-                    new TaskRebalancePortfolioFromFile().startAsyncTask("basketId","somefile.csv");
-
+                    new TaskRebalancePortfolioFromFile().startAsyncTask(userId,basketId,filePath);
                     confirmDialog.close();
                 },
-                "No", // Text for the cancel button
+                "No",
                 event -> {
                     // User clicked "No" or closed the dialog
                     confirmDialog.close();
@@ -295,7 +301,8 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Str
             }
 
             // Create the file
-            File file = new File(uploadDirectory + fileName);
+            String filePath = uploadDirectory + fileName;
+            File file = new File(filePath);
 
             try {
                 // Create an output stream to write the file
@@ -315,7 +322,7 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Str
                 // Send Notification
                 Notification.show("Upload Success");
 
-                openConfirmationDialog();
+                openConfirmationDialog(user.getId(), basketId,filePath);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -345,10 +352,19 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Str
 
     }
 
-    public ModelPortfolioDetailView(ModelPortfolioService modelPortfolioService)  {
+    public ModelPortfolioDetailView(
+            AuthenticatedUser authenticatedUser,
+            AccessAnnotationChecker accessChecker,
+            ModelPortfolioService modelPortfolioService)  {
+
         this.modelPortfolioService = modelPortfolioService;
-        System.out.println("Hi");
-        System.out.println(basketId);
+        this.authenticatedUser = authenticatedUser;
+        this.accessChecker = accessChecker;
+        Optional<User> maybeUser = authenticatedUser.get();
+        if (maybeUser.isPresent()) {
+            user = maybeUser.get();
+        }
+
 
         setSizeFull();
         addClassNames("model-portfolio-detail-view");

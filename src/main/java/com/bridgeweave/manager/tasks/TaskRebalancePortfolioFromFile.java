@@ -17,15 +17,6 @@ public class TaskRebalancePortfolioFromFile  {
     private ExecutorService executorService = Executors.newFixedThreadPool(5);
 
 
-
-    public void startAsyncTask(String basketId, String filename) {
-//        long basketId = 1L; // Replace with the actual basketId
-//        String filename = "path/to/your/file.txt"; // Replace with the actual file path
-        System.out.println("Starting Task");
-        CompletableFuture.runAsync(() -> processFile(basketId, filename), executorService).thenRun(()->notifyUser("Done"));
-        System.out.println("Completed Task");
-    }
-
     private void notifyUser(String message) {
         System.out.println("Notify User Method has been invoked");
         UI.getCurrent().access(() -> {
@@ -34,7 +25,7 @@ public class TaskRebalancePortfolioFromFile  {
     }
 
     @Transactional
-    private void processFile(String basketId, String filename) {
+    private void processFile(Long userId, String basketId, String filename) {
         try {
             // Simulate some processing time
             System.out.println("Sleeping");
@@ -62,5 +53,21 @@ public class TaskRebalancePortfolioFromFile  {
 //            e.printStackTrace();
 //        }
     }
+
+    public void startAsyncTask(Long userId, String basketId, String filename) {
+//        long basketId = 1L; // Replace with the actual basketId
+//        String filename = "path/to/your/file.txt"; // Replace with the actual file path
+        System.out.println("Starting Task for user " + userId);
+        System.out.println("BasketId  " + basketId);
+        System.out.println("filename  " + filename);
+
+
+        CompletableFuture.runAsync(() -> processFile(userId, basketId, filename), executorService).thenRun(()->notifyUser("Done"));
+        System.out.println("Completed Task");
+    }
+
+
+
+
 
 }
