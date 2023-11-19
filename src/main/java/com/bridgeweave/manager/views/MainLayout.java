@@ -188,9 +188,9 @@ public class MainLayout extends AppLayout {
             div.getElement().getStyle().set("align-items", "center");
             div.getElement().getStyle().set("gap", "var(--lumo-space-s)");
             userName.add(div);
-            userName.getSubMenu().addItem("Admin", e -> {
-                authenticatedUser.logout();
-            });
+//            userName.getSubMenu().addItem("Admin", e -> {
+//                authenticatedUser.logout();
+//            });
             userName.getSubMenu().addItem("Notifications", e -> {
                 userName.getUI().ifPresent(ui -> ui.navigate(
                         ListUserNotifications.class));
@@ -226,8 +226,8 @@ public class MainLayout extends AppLayout {
     private MenuItemInfo[] createMenuItems() {
         return new MenuItemInfo[]{ //
                 new MenuItemInfo("Home", LineAwesomeIcon.CHART_AREA_SOLID.create(), HomeView.class), //
-                new MenuItemInfo("BasketList",LineAwesomeIcon.BABY_CARRIAGE_SOLID.create(),BasketList.class),
-                new MenuItemInfo("User Notifications",LineAwesomeIcon.BABY_CARRIAGE_SOLID.create(), ListUserNotifications.class),
+                new MenuItemInfo("Baskets",LineAwesomeIcon.BABY_CARRIAGE_SOLID.create(),BasketList.class),
+//                new MenuItemInfo("User Notifications",LineAwesomeIcon.BABY_CARRIAGE_SOLID.create(), ListUserNotifications.class),
 
 //                new MenuItemInfo("Baskets2", LineAwesomeIcon.BRIEFCASE_SOLID.create(), Baskets2View.class), //
 //
@@ -238,9 +238,8 @@ public class MainLayout extends AppLayout {
 //                new MenuItemInfo("Model Portfolio Detail", LineAwesomeIcon.FILTER_SOLID.create(),
 //                        ModelPortfolioDetailView.class), //
 
-                new MenuItemInfo("Hello World", LineAwesomeIcon.GLOBE_SOLID.create(), HelloWorldView.class), //
-
-                new MenuItemInfo("About", LineAwesomeIcon.FILE.create(), AboutView.class), //
+//                new MenuItemInfo("Hello World", LineAwesomeIcon.GLOBE_SOLID.create(), HelloWorldView.class), //
+//                new MenuItemInfo("About", LineAwesomeIcon.FILE.create(), AboutView.class), //
 
         };
     }
