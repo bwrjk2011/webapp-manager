@@ -1,7 +1,9 @@
 package com.bridgeweave.manager.views;
 
 import com.bridgeweave.manager.data.User;
+import com.bridgeweave.manager.data.UserNotifications;
 import com.bridgeweave.manager.security.AuthenticatedUser;
+import com.bridgeweave.manager.services.UserNotificationService;
 import com.bridgeweave.manager.views.about.AboutView;
 import com.bridgeweave.manager.views.basketdetail.BasketDetailView;
 import com.bridgeweave.manager.views.basketdetail.Baskets2View;
@@ -44,6 +46,7 @@ import com.vaadin.flow.theme.lumo.LumoUtility.TextColor;
 import com.vaadin.flow.theme.lumo.LumoUtility.Whitespace;
 import com.vaadin.flow.theme.lumo.LumoUtility.Width;
 import java.io.ByteArrayInputStream;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.Executors;
@@ -57,11 +60,16 @@ import org.vaadin.lineawesome.LineAwesomeIcon;
  */
 public class MainLayout extends AppLayout {
 
+    private AuthenticatedUser authenticatedUser;
+    private AccessAnnotationChecker accessChecker;
+    private final UserNotificationService userNotificationService;
+
+    private User user;
+
     private int notificationCount = 0; // Replace with the actual count of notifications
-    Span badge;
-    /**
-     * A simple navigation item component, based on ListItem element.
-     */
+    private Span badge;
+
+
     public static class MenuItemInfo extends ListItem {
 
         private final Class<? extends Component> view;
@@ -91,13 +99,17 @@ public class MainLayout extends AppLayout {
 
     }
 
-    private AuthenticatedUser authenticatedUser;
-    private AccessAnnotationChecker accessChecker;
-
 
     private int fetchNotificationCount() {
-        Random random = new Random();
-        return random.nextInt(11);
+        int numberOfMessages = 0;
+        if (user != null){
+            Long userId = user.getId();
+            numberOfMessages = userNotificationService.getAllUnSeenNotifications(userId).size();
+        } else {
+            Random random = new Random();
+            numberOfMessages =random.nextInt(11);
+        }
+        return numberOfMessages;
     }
 
     private void updateNotifications() {
@@ -111,9 +123,18 @@ public class MainLayout extends AppLayout {
             badge.setText(String.valueOf(notificationCount));
         }));
     }
-    public MainLayout(AuthenticatedUser authenticatedUser, AccessAnnotationChecker accessChecker) {
+    public MainLayout(UserNotificationService userNotificationService,
+                      AuthenticatedUser authenticatedUser,
+                      AccessAnnotationChecker accessChecker) {
         this.authenticatedUser = authenticatedUser;
         this.accessChecker = accessChecker;
+        this.userNotificationService = userNotificationService;
+
+        Optional<User> maybeUser = authenticatedUser.get();
+        if (maybeUser.isPresent()) {
+            user = maybeUser.get();
+        }
+
 
         addToNavbar(createHeaderContent());
         setDrawerOpened(false);
