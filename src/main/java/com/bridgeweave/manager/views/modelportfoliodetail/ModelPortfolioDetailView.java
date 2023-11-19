@@ -4,6 +4,7 @@ import com.bridgeweave.manager.data.ModelPortfolio;
 import com.bridgeweave.manager.data.SamplePerson;
 import com.bridgeweave.manager.services.ModelPortfolioService;
 import com.bridgeweave.manager.services.SamplePersonService;
+import com.bridgeweave.manager.tasks.TaskRebalancePortfolioFromFile;
 import com.bridgeweave.manager.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Text;
@@ -11,13 +12,15 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.CheckboxGroup;
 import com.vaadin.flow.component.combobox.MultiSelectComboBox;
+import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.Uses;
+import com.vaadin.flow.component.details.Details;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -35,10 +38,16 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
+import com.vaadin.flow.component.upload.Upload;
+import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer;
 
 @PageTitle("Model Portfolio Detail")
 @Route(value = "model-portfolio-detail", layout = MainLayout.class)
@@ -48,6 +57,13 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Str
 
     private String basketId;
 
+
+    private Grid<ModelPortfolio> grid;
+    private Filters filters;
+    private final ModelPortfolioService modelPortfolioService;
+
+    private Upload upload;
+    ConfirmDialog confirmDialog;
     @Override
     public void setParameter(BeforeEvent beforeEvent, String event) {
         basketId = event;
@@ -56,25 +72,7 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Str
             grid.setItems(modelPortfolioService.getByBid(basketId));
         }
     }
-    private Grid<ModelPortfolio> grid;
-    private Filters filters;
-    private final ModelPortfolioService modelPortfolioService;
-    public ModelPortfolioDetailView(ModelPortfolioService modelPortfolioService)  {
-        this.modelPortfolioService = modelPortfolioService;
-        System.out.println("Hi");
-        System.out.println(basketId);
 
-        setSizeFull();
-        addClassNames("model-portfolio-detail-view");
-
-        filters = new Filters(() -> refreshGrid());
-//        VerticalLayout layout = new VerticalLayout(createMobileFilters(), filters, createGrid());
-        VerticalLayout layout = new VerticalLayout(createGrid());
-        layout.setSizeFull();
-        layout.setPadding(false);
-        layout.setSpacing(false);
-        add(layout);
-    }
 
     private HorizontalLayout createMobileFilters() {
         // Mobile version
@@ -241,7 +239,7 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Str
         grid.addColumn("ticker").setAutoWidth(true);
         grid.addColumn("name").setAutoWidth(true);
         grid.addColumn("allocation").setAutoWidth(true);
-
+        grid.setAllRowsVisible(true);
 //        grid.setItems(query -> samplePersonService.list(
 //                PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query)),
 //                filters).stream());
@@ -256,9 +254,115 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Str
         return grid;
     }
 
+
+    private void openConfirmationDialog() {
+         confirmDialog = new ConfirmDialog("Confirmation",
+                "Do you really want to proceed with the rebalance?",
+                "Yes", // Text for the confirm button
+                event -> {
+                    // User clicked "Yes", perform the action
+                    new TaskRebalancePortfolioFromFile().startAsyncTask("basketId","somefile.csv");
+
+                    confirmDialog.close();
+                },
+                "No", // Text for the cancel button
+                event -> {
+                    // User clicked "No" or closed the dialog
+                    confirmDialog.close();
+                });
+
+        confirmDialog.open();
+    }
+
+    private Component createUpload() {
+        VerticalLayout layoutUpload = new VerticalLayout();
+
+        //        Upload Component
+        MultiFileMemoryBuffer buffer = new MultiFileMemoryBuffer();
+        upload = new Upload(buffer);
+
+        upload.addSucceededListener(event -> {
+            String fileName = event.getFileName();
+            InputStream inputStream = buffer.getInputStream(fileName);
+
+            // Define the directory where you want to save the file
+            String uploadDirectory = "./uploads/";
+
+            // Create the directory if it doesn't exist
+            File directory = new File(uploadDirectory);
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+
+            // Create the file
+            File file = new File(uploadDirectory + fileName);
+
+            try {
+                // Create an output stream to write the file
+                FileOutputStream fileOutputStream = new FileOutputStream(file);
+
+                // Copy the content from the input stream to the output stream
+                byte[] bufferArray = new byte[4096];
+                int bytesRead;
+                while ((bytesRead = inputStream.read(bufferArray)) != -1) {
+                    fileOutputStream.write(bufferArray, 0, bytesRead);
+                }
+
+                // Close streams
+                inputStream.close();
+                fileOutputStream.close();
+
+                // Send Notification
+                Notification.show("Upload Success");
+
+                openConfirmationDialog();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        });
+
+        //        Header
+
+        Span title = new Span(new H4("Overview"));
+        Span text1 = new Span("You are able to rebalance the model portfolio via the use of json files");
+        Span text2 = new Span("On uploading the portfolio, you are asked to confirm and the portfolio is rebalanced immeditely");
+
+        VerticalLayout content = new VerticalLayout(title, text1, text2,upload);
+        content.setSpacing(false);
+        content.setPadding(false);
+
+        Details details = new Details("Rebalance Model Portfolio", content);
+        details.setOpened(false);
+
+        //        Return the components to the UI
+        layoutUpload.add(details);
+        return layoutUpload;
+    }
     private void refreshGrid() {
         grid.getDataProvider().refreshAll();
 
     }
+
+    public ModelPortfolioDetailView(ModelPortfolioService modelPortfolioService)  {
+        this.modelPortfolioService = modelPortfolioService;
+        System.out.println("Hi");
+        System.out.println(basketId);
+
+        setSizeFull();
+        addClassNames("model-portfolio-detail-view");
+
+        filters = new Filters(() -> refreshGrid());
+//        VerticalLayout layout = new VerticalLayout(createMobileFilters(), filters, createGrid());
+        VerticalLayout layout = new VerticalLayout(createGrid(),createUpload());
+        layout.setSizeFull();
+        layout.setPadding(false);
+        layout.setSpacing(false);
+        add(layout);
+    }
+
+
+
 
 }

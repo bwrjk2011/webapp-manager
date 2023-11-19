@@ -44,6 +44,11 @@ import com.vaadin.flow.theme.lumo.LumoUtility.Whitespace;
 import com.vaadin.flow.theme.lumo.LumoUtility.Width;
 import java.io.ByteArrayInputStream;
 import java.util.Optional;
+import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
 /**
@@ -51,6 +56,8 @@ import org.vaadin.lineawesome.LineAwesomeIcon;
  */
 public class MainLayout extends AppLayout {
 
+    private int notificationCount = 0; // Replace with the actual count of notifications
+    Span badge;
     /**
      * A simple navigation item component, based on ListItem element.
      */
@@ -86,12 +93,33 @@ public class MainLayout extends AppLayout {
     private AuthenticatedUser authenticatedUser;
     private AccessAnnotationChecker accessChecker;
 
+
+    private int fetchNotificationCount() {
+        Random random = new Random();
+        return random.nextInt(11);
+    }
+
+    private void updateNotifications() {
+        // Replace this with your actual logic to get the number of notifications
+        // For example, you might fetch the count from a data source
+        int newNotificationCount = fetchNotificationCount();
+
+        // Update the UI with the new count
+        getUI().ifPresent(ui -> ui.access(() -> {
+            notificationCount = newNotificationCount;
+            badge.setText(String.valueOf(notificationCount));
+        }));
+    }
     public MainLayout(AuthenticatedUser authenticatedUser, AccessAnnotationChecker accessChecker) {
         this.authenticatedUser = authenticatedUser;
         this.accessChecker = accessChecker;
 
         addToNavbar(createHeaderContent());
         setDrawerOpened(false);
+
+        // Schedule the async task to update notifications every 10 seconds
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        scheduler.scheduleAtFixedRate(this::updateNotifications, 0, 3, TimeUnit.SECONDS);
     }
 
     private Component createHeaderContent() {
@@ -109,6 +137,12 @@ public class MainLayout extends AppLayout {
         if (maybeUser.isPresent()) {
             User user = maybeUser.get();
 
+//            Hack job rk
+            Integer notificationCount = 3;
+            badge = new Span(String.valueOf(notificationCount));
+            badge.getElement().getThemeList().add("badge");
+
+
             Avatar avatar = new Avatar(user.getName());
             StreamResource resource = new StreamResource("profile-pic",
                     () -> new ByteArrayInputStream(user.getProfilePicture()));
@@ -121,6 +155,7 @@ public class MainLayout extends AppLayout {
 
             MenuItem userName = userMenu.addItem("");
             Div div = new Div();
+            div.add(badge);
             div.add(avatar);
             div.add(user.getName());
             div.add(new Icon("lumo", "dropdown"));
@@ -128,10 +163,12 @@ public class MainLayout extends AppLayout {
             div.getElement().getStyle().set("align-items", "center");
             div.getElement().getStyle().set("gap", "var(--lumo-space-s)");
             userName.add(div);
+            userName.getSubMenu().addItem("Settings", e -> {
+                authenticatedUser.logout();
+            });
             userName.getSubMenu().addItem("Sign out", e -> {
                 authenticatedUser.logout();
             });
-
             layout.add(userMenu);
         } else {
             Anchor loginLink = new Anchor("login", "Sign in");
