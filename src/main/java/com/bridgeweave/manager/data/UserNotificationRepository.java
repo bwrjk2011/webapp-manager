@@ -28,4 +28,9 @@ public interface UserNotificationRepository
     @Query("UPDATE UserNotifications un SET un.hasBeenSeen = true WHERE un.userId = :userId")
     public void setAllNotificationsAsSeenForUser(@Param("userId") Long userId);
 
+
+
+
+
+
 }

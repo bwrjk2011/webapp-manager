@@ -59,6 +59,8 @@ public class UserNotificationService {
         System.out.println("All notifications set as seen for user " + userId);
     }
 
+
+
     public int count() {
         return (int) repository.count();
     }

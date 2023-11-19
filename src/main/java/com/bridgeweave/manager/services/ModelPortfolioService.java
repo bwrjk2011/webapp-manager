@@ -51,10 +51,15 @@ public class ModelPortfolioService {
         return (ArrayList<ModelPortfolio>) repository.findAll();
     }
 
-    public ArrayList<ModelPortfolio> getByBid(String basketId){
+    public ArrayList<ModelPortfolio> getByBid(Long basketId){
         return (ArrayList<ModelPortfolio>) repository.findByBid(basketId);
     }
 
+
+    public void deleteTicketsForBasketIt(Long basketId){
+        repository.deleteTickersForBasketId(basketId);
+        System.out.println("All Tickers for Basket Id have been deleted " + basketId);
+    }
 
 
     public int count() {

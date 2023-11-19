@@ -59,23 +59,23 @@ import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer;
 @Route(value = "model-portfolio-detail", layout = MainLayout.class)
 @AnonymousAllowed
 @Uses(Icon.class)
-public class ModelPortfolioDetailView extends Div implements HasUrlParameter<String>  {
+public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Long>  {
 
-    private String basketId;
+    private Long basketId;
 
     private AuthenticatedUser authenticatedUser;
     private AccessAnnotationChecker accessChecker;
-    private UserNotificationService userNotificationService;
     private User user;
+
+    private UserNotificationService userNotificationService;
+    private final ModelPortfolioService modelPortfolioService;
 
     private Grid<ModelPortfolio> grid;
     private Filters filters;
-    private final ModelPortfolioService modelPortfolioService;
-
     private Upload upload;
     ConfirmDialog confirmDialog;
     @Override
-    public void setParameter(BeforeEvent beforeEvent, String event) {
+    public void setParameter(BeforeEvent beforeEvent, Long event) {
         basketId = event;
         System.out.println(event);
         if (basketId != null){
@@ -265,17 +265,16 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Str
     }
 
 
-    private void openConfirmationDialog(Long userId, String basketId, String filePath) {
+    private void openConfirmationDialog(Long userId, Long basketId, String filePath) {
          confirmDialog = new ConfirmDialog("Confirmation",
                 "Proceed with the rebalance and update Portfolio definitions?",
                 "Yes",
                 event -> {
-                    new TaskRebalancePortfolioFromFile(userNotificationService).startAsyncTask(userId,basketId,filePath);
+                    new TaskRebalancePortfolioFromFile(userNotificationService, modelPortfolioService).startAsyncTask(userId,basketId,filePath);
                     confirmDialog.close();
                 },
                 "No",
                 event -> {
-                    // User clicked "No" or closed the dialog
                     confirmDialog.close();
                 });
 

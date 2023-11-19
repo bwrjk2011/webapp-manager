@@ -6,13 +6,13 @@ import jakarta.persistence.Entity;
 public class ModelPortfolio extends AbstractEntity{
     private String ownerCompanyId;
     private String ownerCompanyName;
-    private String bid;
+    private Long bid;
 
-    public String getBid() {
+    public Long getBid() {
         return bid;
     }
 
-    public void setBid(String bid) {
+    public void setBid(Long bid) {
         this.bid = bid;
     }
 

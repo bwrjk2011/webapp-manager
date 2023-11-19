@@ -66,7 +66,7 @@ public class BasketList extends Composite<VerticalLayout> {
                             Notification.show(message, 3000, Notification.Position.MIDDLE);
 
                             grid.getUI().ifPresent(ui -> ui.navigate(
-                                    ModelPortfolioDetailView.class,clickedItem.getId().toString()));
+                                    ModelPortfolioDetailView.class,clickedItem.getId()));
 
                         })
         ).setHeader("Portfolio");
