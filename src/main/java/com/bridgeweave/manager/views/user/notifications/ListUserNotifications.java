@@ -48,6 +48,8 @@ public class ListUserNotifications extends VerticalLayout {
 
             grid.setItems(userNotifications);
             grid.setAllRowsVisible(true);
+
+            userNotificationService.setAllNotificationsAsSeenForUser(userId);
         }
 
         add(grid);

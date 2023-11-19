@@ -5,6 +5,7 @@ import com.bridgeweave.manager.data.UserNotifications;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -53,7 +54,10 @@ public class UserNotificationService {
         return unseenNotificationsForUser;
     }
 
-
+    public void setAllNotificationsAsSeenForUser(Long userId){
+        repository.setAllNotificationsAsSeenForUser(userId);
+        System.out.println("All notifications set as seen for user " + userId);
+    }
 
     public int count() {
         return (int) repository.count();
