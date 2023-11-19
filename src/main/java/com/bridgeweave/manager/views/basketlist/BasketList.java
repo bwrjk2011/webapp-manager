@@ -1,13 +1,11 @@
 package com.bridgeweave.manager.views.basketlist;
 
 import com.bridgeweave.manager.data.Basket;
-import com.bridgeweave.manager.data.SamplePerson;
 import com.bridgeweave.manager.services.BasketService;
 import com.bridgeweave.manager.views.MainLayout;
 import com.bridgeweave.manager.views.basketdetail.BasketDetailView;
 import com.bridgeweave.manager.views.modelportfoliodetail.ModelPortfolioDetailView;
 import com.vaadin.flow.component.Composite;
-import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.Uses;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
@@ -16,16 +14,13 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.renderer.NativeButtonRenderer;
-import com.vaadin.flow.function.ValueProvider;
 import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
-import jakarta.annotation.security.RolesAllowed;
+import jakarta.annotation.security.PermitAll;
 
 @PageTitle("BasketList")
+@PermitAll
 @Route(value = "basket-list", layout = MainLayout.class)
-@RolesAllowed("USER")
 @Uses(Icon.class)
 public class BasketList extends Composite<VerticalLayout> {
     private BasketService basketService;

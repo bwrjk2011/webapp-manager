@@ -7,6 +7,11 @@ public class ModelPortfolio extends AbstractEntity{
     private String ownerCompanyId;
     private String ownerCompanyName;
     private Long bid;
+    private String ticker;
+    private String name;
+    private Float allocation;
+    private String rationale;
+
 
     public Long getBid() {
         return bid;
@@ -16,10 +21,7 @@ public class ModelPortfolio extends AbstractEntity{
         this.bid = bid;
     }
 
-    private String ticker;
-    private String name;
-    private Long allocation;
-    private String rationale;
+
 
     public String getOwnerCompanyId() {
         return ownerCompanyId;
@@ -53,11 +55,11 @@ public class ModelPortfolio extends AbstractEntity{
         this.name = name;
     }
 
-    public Long getAllocation() {
+    public Float getAllocation() {
         return allocation;
     }
 
-    public void setAllocation(Long allocation) {
+    public void setAllocation(Float allocation) {
         this.allocation = allocation;
     }
 

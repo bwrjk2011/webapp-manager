@@ -45,18 +45,21 @@ public class TaskRebalancePortfolioFromFile  {
                 ICommonsList<ICommonsList<String>> rows = csvReader.readAll();
 
                 // Assuming the first row is a header, so start from index 1
-                for (int i = 1; i < rows.size(); i++) {
+                for (int i = 0; i < rows.size(); i++) {
                     ICommonsList<String> row = rows.get(i);
 
                     // Assuming row[0] is ticker id and row[1] is the allocation as a string
                     String tickerId = row.get(0);
-                    Long allocation = Long.parseLong(row.get(1));
+                    String companyName = row.get(1);
+                    Float allocation = Float.parseFloat(row.get(2));
 
                     // Create ModelPortfolio object
                     ModelPortfolio modelPortfolio = new ModelPortfolio();
                     modelPortfolio.setBid(basketId);
                     modelPortfolio.setTicker(tickerId);
+                    modelPortfolio.setName(companyName);
                     modelPortfolio.setAllocation(allocation);
+
                     modelPortfolioService.update(modelPortfolio);
                 }
             } catch (Exception e) {

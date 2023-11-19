@@ -1,10 +1,10 @@
-new_ticker_1,0.1
-new_ticker_2,0.1
-new_ticker_3,0.1
-new_ticker_4,0.1
-new_ticker_5,0.1
-new_ticker_6,0.1
-new_ticker_7,0.1
-new_ticker_8,0.1
-new_ticker_9,0.1
-new_ticker_10,0.1
+new_ticker_1,Some Company A,0.1
+new_ticker_2,Some Company B,0.1
+new_ticker_3,Some Company C,0.1
+new_ticker_4,Some Company D,0.1
+new_ticker_5,Some Company E,0.1
+new_ticker_6,Some Company F,0.1
+new_ticker_7,Some Company G,0.1
+new_ticker_8,Some Company H,0.1
+new_ticker_9,Some Company I,0.1
+new_ticker_10,Some Company J,0.1
