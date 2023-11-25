@@ -3,6 +3,12 @@ This application provides an initial attempt at providing the manager
 functionality for the Prometheus application.  The idea is that we can create 
 and manage baskets and their model portfolios.
 
+## Configuring the application
+The application is driven from the properties file.
+This can be found here:
+
+![Config](./docs/config.png)
+```/src/main/resources/application.properties```
 
 
 ## Running the application
@@ -43,7 +49,8 @@ docker run -p 8080:8080 manager:latest
 
 
 ## Useful Commands 
-I maxed out my drive, so needed to clean up docker.  These are the commands that I used.
+I maxed out my drive, so needed to clean up docker.  
+These are the commands that I used and might be useful to other developers, but not needed for the build
 
 docker rm -f $(docker ps -a -q)
 docker rmi $(docker images -a -q)
