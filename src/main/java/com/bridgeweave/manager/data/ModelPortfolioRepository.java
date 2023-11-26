@@ -23,4 +23,7 @@ public interface ModelPortfolioRepository
     public void deleteTickersForBasketId(@Param("bid") Long bid);
 
 
+    @Query("SELECT mp FROM ModelPortfolio mp WHERE mp.bid = :bid and mp.hasError=True")
+    public List<ModelPortfolio> getEquityErrorsByBasketId(@Param("bid") Long bid);
+
 }

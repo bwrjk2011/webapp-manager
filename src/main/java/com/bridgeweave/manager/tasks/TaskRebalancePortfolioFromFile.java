@@ -30,7 +30,9 @@ public class TaskRebalancePortfolioFromFile  {
         System.out.println("Notify User Method has been invoked");
         UI.getCurrent().access(() -> {
             Notification.show(message, 3000, Notification.Position.MIDDLE);
+
         });
+
     }
 
     @Transactional
@@ -64,7 +66,7 @@ public class TaskRebalancePortfolioFromFile  {
                         Equities equityBySymbol = equitiesService.getEquityBySymbol(symbol);
                         if (equityBySymbol == null) {
                             errorFound = Boolean.TRUE;
-                            errorMessage = "Equity not found in Universe of stocks";
+                            errorMessage = "Equity " + symbol + " not found in Universe of stocks";
                         } else{
                             System.out.println("Found in Universe " + symbol);
                             errorMessage="Equity " + symbol + " found in Universe";

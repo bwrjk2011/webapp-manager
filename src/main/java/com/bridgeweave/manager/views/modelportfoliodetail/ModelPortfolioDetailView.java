@@ -1,5 +1,6 @@
 package com.bridgeweave.manager.views.modelportfoliodetail;
 
+import com.bridgeweave.manager.data.Equities;
 import com.bridgeweave.manager.data.ModelPortfolio;
 import com.bridgeweave.manager.data.SamplePerson;
 import com.bridgeweave.manager.data.User;
@@ -78,14 +79,35 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
     private Filters filters;
     private Upload upload;
     ConfirmDialog confirmDialog;
+
+    Button buttonSync = new Button("Sync");
+
     @Override
     public void setParameter(BeforeEvent beforeEvent, Long event) {
         basketId = event;
+        System.out.println("RJK. We have an event ");
         System.out.println(event);
         if (basketId != null){
             grid.setItems(modelPortfolioService.getByBid(basketId));
+            List<ModelPortfolio> equityErrorsByBasketId = modelPortfolioService.getEquityErrorsByBasketId(basketId);
+
+            if (buttonSync !=null){
+                if (equityErrorsByBasketId!=null){
+                    System.out.println("RJK. Inside setParameter and have and error Count of " + equityErrorsByBasketId.size());
+                    if (equityErrorsByBasketId.size()>0) {
+                        buttonSync.setEnabled(Boolean.FALSE);
+                    } else{
+                        buttonSync.setEnabled(Boolean.TRUE);
+                    }
+                } else{
+                    System.out.println("RJK. Its null");
+                }
+            }
         }
     }
+
+
+
 
 
     private HorizontalLayout createMobileFilters() {
@@ -268,25 +290,6 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
 
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         grid.addClassNames(LumoUtility.Border.TOP, LumoUtility.BorderColor.CONTRAST_10);
-//  Not Setting the CSS
-        //        grid.setPartNameGenerator(equity -> {
-//            if (equity != null) {
-//                if (equity.getHasError() != null) {
-//
-//                    System.out.println("We have an error with the equity listing");
-//
-//
-//                    if (equity.getHasError()) {
-//                        System.out.println("Setting low   " + equity.getName());
-//                        return "low-rating";
-//                    } else {
-//                        System.out.println("Setting high   " + equity.getName());
-//                        return "high-rating";
-//                    }
-//                }
-//            }
-//            return null;
-//        });
         return grid;
     }
 
@@ -357,27 +360,51 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
 
         });
 
-        //        Header
+        //  Header
 
         Span title = new Span(new H4("Overview"));
         Span text1 = new Span("You are able to rebalance the model portfolio via the use of json files");
-        Span text2 = new Span("On uploading the portfolio, you are asked to confirm and the portfolio is rebalanced immeditely");
+        Span text2 = new Span("First step is to validate the contents prior to synchronising with Prometheus");
 
-        VerticalLayout content = new VerticalLayout(title, text1, text2,upload);
+        VerticalLayout content = new VerticalLayout(title, text1, text2, upload);
         content.setSpacing(false);
         content.setPadding(false);
 
-        Details details = new Details("Rebalance Model Portfolio", content);
+        Details details = new Details("Step1.  Validate Model Portfolio", content);
         details.setOpened(false);
 
         //        Return the components to the UI
         layoutUpload.add(details);
         return layoutUpload;
     }
+
+
+    private Component createSync() {
+        VerticalLayout layoutSync = new VerticalLayout();
+        Span title = new Span(new H4("Synchronise with Prometheus"));
+        Span text1 = new Span("You can now sync the Model Portfolio with Prometheus");
+        Span text2 = new Span("All stocks exist and portfolio weights addup to 1");
+        buttonSync = new Button("Sync with Prometheus");
+
+        VerticalLayout content = new VerticalLayout(title, text1, text2, buttonSync);
+        content.setSpacing(false);
+        content.setPadding(false);
+
+        Details details = new Details("Step2. Synchronise Model Portfolio with Prometheus", content);
+        details.setOpened(false);
+
+        //  Return the components to the UI
+        layoutSync.add(details);
+        return layoutSync;
+    }
+
+
+
     private void refreshGrid() {
         grid.getDataProvider().refreshAll();
 
     }
+
 
     public ModelPortfolioDetailView(
             AuthenticatedUser authenticatedUser,
@@ -404,13 +431,12 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
 
         filters = new Filters(() -> refreshGrid());
 //        VerticalLayout layout = new VerticalLayout(createMobileFilters(), filters, createGrid());
-        VerticalLayout layout = new VerticalLayout(createGrid(),createUpload());
+        VerticalLayout layout = new VerticalLayout(createGrid(),createUpload(), createSync());
         layout.setSizeFull();
         layout.setPadding(false);
         layout.setSpacing(false);
         add(layout);
     }
-
 
 
 

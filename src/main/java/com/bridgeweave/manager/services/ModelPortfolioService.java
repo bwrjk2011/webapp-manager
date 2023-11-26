@@ -66,4 +66,17 @@ public class ModelPortfolioService {
         return (int) repository.count();
     }
 
-}
+
+    public List<ModelPortfolio> getEquityErrorsByBasketId(Long basketId){
+        List<ModelPortfolio> equityErrorsByBasketId = null;
+        try{
+            equityErrorsByBasketId = repository.getEquityErrorsByBasketId(basketId);
+        } catch (Exception e){
+            System.out.print("public List<ModelPortfolio> getEquityErrorsByBasketId(String basketId) has an exception " + e);
+        }
+        return equityErrorsByBasketId;
+    }
+
+
+
+    }

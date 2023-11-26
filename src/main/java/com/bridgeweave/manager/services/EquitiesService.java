@@ -56,4 +56,9 @@ public class EquitiesService {
         return equityBySymbol;
     }
 
+//    public List<Equities> getEquityErrorsByBasketId(String basketId){
+//        List<Equities> equityErrorsByBasketId = repository.getEquityErrorsByBasketId(basketId);
+//        return equityErrorsByBasketId;
+//    }
+
 }

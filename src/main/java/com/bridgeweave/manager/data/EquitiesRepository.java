@@ -18,4 +18,7 @@ public interface EquitiesRepository
 
 
 
+
+
+
 }
