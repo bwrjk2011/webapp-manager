@@ -67,6 +67,7 @@ public class ModelPortfolioService {
     }
 
 
+
     public List<ModelPortfolio> getEquityErrorsByBasketId(Long basketId){
         List<ModelPortfolio> equityErrorsByBasketId = null;
         try{

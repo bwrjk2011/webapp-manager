@@ -123,6 +123,7 @@ public class MainLayout extends AppLayout {
             badge.setText(String.valueOf(notificationCount));
         }));
     }
+
     public MainLayout(UserNotificationService userNotificationService,
                       AuthenticatedUser authenticatedUser,
                       AccessAnnotationChecker accessChecker) {

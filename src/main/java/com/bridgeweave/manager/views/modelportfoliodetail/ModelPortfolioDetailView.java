@@ -88,19 +88,29 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
         System.out.println("RJK. We have an event ");
         System.out.println(event);
         if (basketId != null){
+
             grid.setItems(modelPortfolioService.getByBid(basketId));
+
             List<ModelPortfolio> equityErrorsByBasketId = modelPortfolioService.getEquityErrorsByBasketId(basketId);
 
+            ArrayList<ModelPortfolio> byBid = modelPortfolioService.getByBid(basketId);
+            int modelCount = byBid.size();
+            System.out.println("RJK. count of the number of equities " + modelCount);
+
             if (buttonSync !=null){
-                if (equityErrorsByBasketId!=null){
-                    System.out.println("RJK. Inside setParameter and have and error Count of " + equityErrorsByBasketId.size());
-                    if (equityErrorsByBasketId.size()>0) {
-                        buttonSync.setEnabled(Boolean.FALSE);
+                if (modelCount > 0){
+                    if (equityErrorsByBasketId!=null){
+                        System.out.println("RJK. Inside setParameter and have and error Count of " + equityErrorsByBasketId.size());
+                        if (equityErrorsByBasketId.size()>0) {
+                            buttonSync.setEnabled(Boolean.FALSE);
+                        } else{
+                            buttonSync.setEnabled(Boolean.TRUE);
+                        }
                     } else{
-                        buttonSync.setEnabled(Boolean.TRUE);
+                        System.out.println("RJK. Its null");
                     }
-                } else{
-                    System.out.println("RJK. Its null");
+                } else {
+                    buttonSync.setEnabled(Boolean.FALSE);
                 }
             }
         }
@@ -317,6 +327,10 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
         MultiFileMemoryBuffer buffer = new MultiFileMemoryBuffer();
         upload = new Upload(buffer);
 
+        upload.addStartedListener(startedEvent -> {
+            buttonSync.setEnabled(Boolean.FALSE);
+        });
+
         upload.addSucceededListener(event -> {
             String fileName = event.getFileName();
             InputStream inputStream = buffer.getInputStream(fileName);
@@ -354,6 +368,7 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
 
                 openConfirmationDialog(user.getId(), basketId,filePath);
 
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -385,6 +400,7 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
         Span text1 = new Span("You can now sync the Model Portfolio with Prometheus");
         Span text2 = new Span("All stocks exist and portfolio weights addup to 1");
         buttonSync = new Button("Sync with Prometheus");
+        buttonSync.setEnabled(Boolean.FALSE);
 
         VerticalLayout content = new VerticalLayout(title, text1, text2, buttonSync);
         content.setSpacing(false);
