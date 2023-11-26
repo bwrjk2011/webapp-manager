@@ -399,8 +399,14 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
         Span title = new Span(new H4("Synchronise with Prometheus"));
         Span text1 = new Span("Once the button is enabled you will be able to sync the Model Portfolio with Prometheus");
         Span text2 = new Span("All stocks must exist in the universe and portfolio weights must add up to 1");
+
         buttonSync = new Button("Sync with Prometheus");
         buttonSync.setEnabled(Boolean.FALSE);
+        buttonSync.addClickListener(buttonClickEvent -> {
+            Notification.show("Synchronising with Prometheus");
+        });
+
+
 
         VerticalLayout content = new VerticalLayout(title, text1, text2, buttonSync);
         content.setSpacing(false);
@@ -422,6 +428,7 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
             if (modelPortfolioService!=null){
                 if (basketId !=null){
                     grid.setItems(modelPortfolioService.getByBid(basketId));
+
                 }
             }
         }
