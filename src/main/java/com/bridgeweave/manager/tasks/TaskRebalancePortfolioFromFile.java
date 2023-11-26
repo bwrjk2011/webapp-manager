@@ -56,7 +56,7 @@ public class TaskRebalancePortfolioFromFile  {
                     // Create ModelPortfolio object
                     ModelPortfolio modelPortfolio = new ModelPortfolio();
                     modelPortfolio.setBid(basketId);
-                    modelPortfolio.setTicker(tickerId);
+                    modelPortfolio.setSymbol(tickerId);
                     modelPortfolio.setName(companyName);
                     modelPortfolio.setAllocation(allocation);
 

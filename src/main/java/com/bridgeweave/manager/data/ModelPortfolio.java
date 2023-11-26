@@ -7,7 +7,7 @@ public class ModelPortfolio extends AbstractEntity{
     private String ownerCompanyId;
     private String ownerCompanyName;
     private Long bid;
-    private String ticker;
+    private String symbol;
     private String name;
     private Float allocation;
     private String rationale;
@@ -39,12 +39,12 @@ public class ModelPortfolio extends AbstractEntity{
         this.ownerCompanyName = ownerCompanyName;
     }
 
-    public String getTicker() {
-        return ticker;
+    public String getSymbol() {
+        return symbol;
     }
 
-    public void setTicker(String ticker) {
-        this.ticker = ticker;
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
     }
 
     public String getName() {

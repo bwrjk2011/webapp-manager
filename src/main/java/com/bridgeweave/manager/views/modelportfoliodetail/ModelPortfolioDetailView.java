@@ -248,7 +248,7 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
     private Component createGrid() {
         grid = new Grid<>(ModelPortfolio.class, false);
         grid.addColumn("bid").setAutoWidth(true);
-        grid.addColumn("ticker").setAutoWidth(true);
+        grid.addColumn("symbol").setAutoWidth(true);
         grid.addColumn("name").setAutoWidth(true);
         grid.addColumn("allocation").setAutoWidth(true);
         grid.setAllRowsVisible(true);
