@@ -386,7 +386,7 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
         content.setPadding(false);
 
         Details details = new Details("Step1.  Validate Model Portfolio", content);
-        details.setOpened(false);
+        details.setOpened(true);
 
         //        Return the components to the UI
         layoutUpload.add(details);
@@ -397,8 +397,8 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
     private Component createSync() {
         VerticalLayout layoutSync = new VerticalLayout();
         Span title = new Span(new H4("Synchronise with Prometheus"));
-        Span text1 = new Span("You can now sync the Model Portfolio with Prometheus");
-        Span text2 = new Span("All stocks exist and portfolio weights addup to 1");
+        Span text1 = new Span("Once the button is enabled you will be able to sync the Model Portfolio with Prometheus");
+        Span text2 = new Span("All stocks must exist in the universe and portfolio weights must add up to 1");
         buttonSync = new Button("Sync with Prometheus");
         buttonSync.setEnabled(Boolean.FALSE);
 
@@ -407,7 +407,7 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
         content.setPadding(false);
 
         Details details = new Details("Step2. Synchronise Model Portfolio with Prometheus", content);
-        details.setOpened(false);
+        details.setOpened(true);
 
         //  Return the components to the UI
         layoutSync.add(details);
@@ -417,7 +417,14 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
 
 
     private void refreshGrid() {
-        grid.getDataProvider().refreshAll();
+        if (grid !=null){
+            grid.getDataProvider().refreshAll();
+            if (modelPortfolioService!=null){
+                if (basketId !=null){
+                    grid.setItems(modelPortfolioService.getByBid(basketId));
+                }
+            }
+        }
 
     }
 
@@ -441,6 +448,11 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
             user = maybeUser.get();
         }
 
+        if (grid !=null) {
+            grid.addItemClickListener(modelPortfolioItemClickEvent -> {
+                refreshGrid();
+            });
+        }
 
         setSizeFull();
         addClassNames("model-portfolio-detail-view");
