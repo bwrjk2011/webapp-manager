@@ -3,3 +3,20 @@
 @import url('./views/baskets2-view.css');
 @import url('./views/wrapper-view.css');
 @import url('./views/model-portfolio-detail-view.css');
+
+
+vaadin-grid.styling::part(high-rating) {
+    background-color: var(--lumo-success-color-10pct);
+}
+
+vaadin-grid.styling::part(low-rating) {
+    background-color: red;
+}
+
+vaadin-grid.styling::part(loading-row-cell) {
+    background-color: var(--lumo-base-color);
+}
+
+vaadin-grid.styling::part(font-weight-bold) {
+    font-weight: bold;
+}

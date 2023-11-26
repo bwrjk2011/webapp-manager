@@ -1,9 +1,11 @@
 package com.bridgeweave.manager.data;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
 @Entity
 public class Equities extends AbstractEntity {
+
     private String companyName;
     private String industry;
     private String symbol;

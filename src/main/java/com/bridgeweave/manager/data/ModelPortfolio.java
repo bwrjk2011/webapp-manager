@@ -12,6 +12,10 @@ public class ModelPortfolio extends AbstractEntity{
     private Float allocation;
     private String rationale;
 
+    private Boolean hasError;
+
+    private String errorMessage;
+
 
     public Long getBid() {
         return bid;
@@ -71,6 +75,21 @@ public class ModelPortfolio extends AbstractEntity{
         this.rationale = rationale;
     }
 
+    public Boolean getHasError() {
+        return hasError;
+    }
+
+    public void setHasError(Boolean hasError) {
+        this.hasError = hasError;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
 
 
 

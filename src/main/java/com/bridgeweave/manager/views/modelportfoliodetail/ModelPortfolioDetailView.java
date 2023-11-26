@@ -4,6 +4,7 @@ import com.bridgeweave.manager.data.ModelPortfolio;
 import com.bridgeweave.manager.data.SamplePerson;
 import com.bridgeweave.manager.data.User;
 import com.bridgeweave.manager.security.AuthenticatedUser;
+import com.bridgeweave.manager.services.EquitiesService;
 import com.bridgeweave.manager.services.ModelPortfolioService;
 import com.bridgeweave.manager.services.SamplePersonService;
 import com.bridgeweave.manager.services.UserNotificationService;
@@ -71,6 +72,7 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
 
     private UserNotificationService userNotificationService;
     private final ModelPortfolioService modelPortfolioService;
+    private EquitiesService equitiesService;
 
     private Grid<ModelPortfolio> grid;
     private Filters filters;
@@ -247,10 +249,14 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
 
     private Component createGrid() {
         grid = new Grid<>(ModelPortfolio.class, false);
-        grid.addColumn("bid").setAutoWidth(true);
+        grid.addClassName("styling");
+//        grid.addColumn("bid").setAutoWidth(true);
         grid.addColumn("symbol").setAutoWidth(true);
         grid.addColumn("name").setAutoWidth(true);
         grid.addColumn("allocation").setAutoWidth(true);
+        grid.addColumn("hasError").setAutoWidth(true).setTooltipGenerator(equity->equity.getErrorMessage());
+
+
         grid.setAllRowsVisible(true);
 //        grid.setItems(query -> samplePersonService.list(
 //                PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query)),
@@ -262,7 +268,25 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
 
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         grid.addClassNames(LumoUtility.Border.TOP, LumoUtility.BorderColor.CONTRAST_10);
-
+//  Not Setting the CSS
+        //        grid.setPartNameGenerator(equity -> {
+//            if (equity != null) {
+//                if (equity.getHasError() != null) {
+//
+//                    System.out.println("We have an error with the equity listing");
+//
+//
+//                    if (equity.getHasError()) {
+//                        System.out.println("Setting low   " + equity.getName());
+//                        return "low-rating";
+//                    } else {
+//                        System.out.println("Setting high   " + equity.getName());
+//                        return "high-rating";
+//                    }
+//                }
+//            }
+//            return null;
+//        });
         return grid;
     }
 
@@ -272,7 +296,7 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
                 "Proceed with the rebalance and update Portfolio definitions?",
                 "Yes",
                 event -> {
-                    new TaskRebalancePortfolioFromFile(userNotificationService, modelPortfolioService).startAsyncTask(userId,basketId,filePath);
+                    new TaskRebalancePortfolioFromFile(userNotificationService, modelPortfolioService, equitiesService).startAsyncTask(userId,basketId,filePath);
                     confirmDialog.close();
                 },
                 "No",
@@ -359,12 +383,16 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
             AuthenticatedUser authenticatedUser,
             AccessAnnotationChecker accessChecker,
             ModelPortfolioService modelPortfolioService,
-            UserNotificationService userNotificationService)  {
+            UserNotificationService userNotificationService,
+            EquitiesService equitiesService
+            )  {
 
         this.modelPortfolioService = modelPortfolioService;
         this.authenticatedUser = authenticatedUser;
         this.accessChecker = accessChecker;
         this.userNotificationService = userNotificationService;
+        this.equitiesService = equitiesService;
+
         Optional<User> maybeUser = authenticatedUser.get();
         if (maybeUser.isPresent()) {
             user = maybeUser.get();

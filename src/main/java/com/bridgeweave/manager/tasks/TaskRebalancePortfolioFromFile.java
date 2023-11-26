@@ -1,7 +1,9 @@
 package com.bridgeweave.manager.tasks;
 
+import com.bridgeweave.manager.data.Equities;
 import com.bridgeweave.manager.data.ModelPortfolio;
 import com.bridgeweave.manager.data.UserNotifications;
+import com.bridgeweave.manager.services.EquitiesService;
 import com.bridgeweave.manager.services.ModelPortfolioService;
 import com.bridgeweave.manager.services.UserNotificationService;
 import com.helger.commons.collection.impl.ICommonsList;
@@ -18,6 +20,8 @@ import java.util.concurrent.Executors;
 public class TaskRebalancePortfolioFromFile  {
     private final UserNotificationService userNotificationService;
     private final ModelPortfolioService modelPortfolioService;
+
+    private final EquitiesService equitiesService;
 
     private ExecutorService executorService = Executors.newFixedThreadPool(5);
 
@@ -49,16 +53,36 @@ public class TaskRebalancePortfolioFromFile  {
                     ICommonsList<String> row = rows.get(i);
 
                     // Assuming row[0] is ticker id and row[1] is the allocation as a string
-                    String tickerId = row.get(0);
+                    String symbol = row.get(0);
                     String companyName = row.get(1);
                     Float allocation = Float.parseFloat(row.get(2));
+
+                    boolean errorFound = Boolean.FALSE;
+                    String errorMessage = "";
+                    try {
+                        System.out.println("Searching Universe for " + symbol);
+                        Equities equityBySymbol = equitiesService.getEquityBySymbol(symbol);
+                        if (equityBySymbol == null) {
+                            errorFound = Boolean.TRUE;
+                            errorMessage = "Equity not found in Universe of stocks";
+                        } else{
+                            System.out.println("Found in Universe " + symbol);
+                            errorMessage="Equity " + symbol + " found in Universe";
+                        }
+                    } catch (Exception e){
+                        System.out.println(e);
+                        errorFound = Boolean.TRUE;
+                        errorMessage = "Equity not found in Universe of stocks";
+                    }
 
                     // Create ModelPortfolio object
                     ModelPortfolio modelPortfolio = new ModelPortfolio();
                     modelPortfolio.setBid(basketId);
-                    modelPortfolio.setSymbol(tickerId);
+                    modelPortfolio.setSymbol(symbol);
                     modelPortfolio.setName(companyName);
                     modelPortfolio.setAllocation(allocation);
+                    modelPortfolio.setHasError(errorFound);
+                    modelPortfolio.setErrorMessage(errorMessage);
 
                     modelPortfolioService.update(modelPortfolio);
                 }
@@ -95,9 +119,11 @@ public class TaskRebalancePortfolioFromFile  {
 
 
     public TaskRebalancePortfolioFromFile(UserNotificationService userNotificationService,
-                                          ModelPortfolioService modelPortfolioService){
+                                          ModelPortfolioService modelPortfolioService,
+                                          EquitiesService equitiesService){
         this.userNotificationService = userNotificationService;
         this.modelPortfolioService=modelPortfolioService;
+        this.equitiesService = equitiesService;
     }
 
 }
