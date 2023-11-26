@@ -32,7 +32,9 @@ public class TaskSyncBasketToPrometheus {
 
     private ExecutorService executorService = Executors.newFixedThreadPool(5);
 
-    private static PortfolioRequest createPortfolioRequest() {
+    private static PortfolioRequest createPortfolioRequest(Long basketId, ArrayList<ModelPortfolio> equities) {
+        ArrayList<Constituent> constituents = new ArrayList<>();
+
         PortfolioRequest request = new PortfolioRequest();
         request.setPortfolioId("rjk002");
         request.setStartDate("2024-01-01");
@@ -40,32 +42,18 @@ public class TaskSyncBasketToPrometheus {
         request.setStatus("active");
         request.setCreatedBy("Rich");
 
-        Constituent constituent1 = new Constituent();
-        constituent1.setSymbol("SUNPHARMA");
-        constituent1.setWeight(0.3);
-        constituent1.setIsin("entity");
-        constituent1.setStatus("active");
+        for(int i=0;i<equities.size();i++){
+            ModelPortfolio modelPortfolio = equities.get(i);
 
-        Constituent constituent2 = new Constituent();
-        constituent2.setSymbol("TCS");
-        constituent2.setWeight(0.3);
-        constituent2.setIsin("entity");
-        constituent2.setStatus("active");
+            Constituent constituent = new Constituent();
+            constituent.setSymbol(modelPortfolio.getSymbol());
+            constituent.setWeight(0.1);
+            constituent.setIsin("entity");
+            constituent.setStatus("active");
+            constituents.add(constituent);
+        }
 
-        Constituent constituent3 = new Constituent();
-        constituent3.setSymbol("TATACONSUM");
-        constituent3.setWeight(0.3);
-        constituent3.setIsin("entity");
-        constituent3.setStatus("active");
-
-        Constituent constituent4 = new Constituent();
-        constituent4.setSymbol("TATAMOTORS");
-        constituent4.setWeight(0.1);
-        constituent4.setIsin("entity");
-        constituent4.setStatus("active");
-
-        request.setConstituents(List.of(constituent1, constituent2,constituent3,constituent4 ));
-
+        request.setConstituents(constituents);
         return request;
     }
 
@@ -99,7 +87,7 @@ public class TaskSyncBasketToPrometheus {
     private void syncModelPortfolio(Long basketId, ArrayList<ModelPortfolio> equities) {
         try {
             System.out.println("Starting syncModelPortfolio");
-            PortfolioRequest portfolioRequest = createPortfolioRequest();
+            PortfolioRequest portfolioRequest = createPortfolioRequest(basketId,equities);
             postRequest(portfolioRequest);
             System.out.println("Completed syncModelPortfolio");
         } catch (Exception e) {
