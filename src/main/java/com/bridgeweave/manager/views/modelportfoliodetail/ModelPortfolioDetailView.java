@@ -10,6 +10,7 @@ import com.bridgeweave.manager.services.ModelPortfolioService;
 import com.bridgeweave.manager.services.SamplePersonService;
 import com.bridgeweave.manager.services.UserNotificationService;
 import com.bridgeweave.manager.tasks.TaskRebalancePortfolioFromFile;
+import com.bridgeweave.manager.tasks.TaskSyncBasketToPrometheus;
 import com.bridgeweave.manager.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Text;
@@ -75,6 +76,9 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
     private final ModelPortfolioService modelPortfolioService;
     private EquitiesService equitiesService;
 
+    // List of Equities associated with a Portfolio.  Needed to invoke sync operation
+    private ArrayList<ModelPortfolio> byBid;
+
     private Grid<ModelPortfolio> grid;
     private Filters filters;
     private Upload upload;
@@ -93,7 +97,7 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
 
             List<ModelPortfolio> equityErrorsByBasketId = modelPortfolioService.getEquityErrorsByBasketId(basketId);
 
-            ArrayList<ModelPortfolio> byBid = modelPortfolioService.getByBid(basketId);
+            byBid = modelPortfolioService.getByBid(basketId);
             int modelCount = byBid.size();
             System.out.println("RJK. count of the number of equities " + modelCount);
 
@@ -403,7 +407,8 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
         buttonSync = new Button("Sync with Prometheus");
         buttonSync.setEnabled(Boolean.FALSE);
         buttonSync.addClickListener(buttonClickEvent -> {
-            Notification.show("Synchronising with Prometheus");
+            Notification.show("Synchronising with Prometheus, calling Async operation");
+            new TaskSyncBasketToPrometheus().startAsyncTask(basketId,byBid);
         });
 
 
