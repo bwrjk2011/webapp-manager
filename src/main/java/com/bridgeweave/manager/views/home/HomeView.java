@@ -34,7 +34,7 @@ import jakarta.annotation.security.RolesAllowed;
 
 @PageTitle("Home")
 @Route(value = "home", layout = MainLayout.class)
-@RouteAlias(value = "", layout = MainLayout.class)
+//@RouteAlias(value = "", layout = MainLayout.class)
 //@RolesAllowed("USER")
 @PermitAll
 public class HomeView extends Main {

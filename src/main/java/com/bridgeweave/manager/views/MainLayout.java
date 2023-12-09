@@ -226,7 +226,7 @@ public class MainLayout extends AppLayout {
 
     private MenuItemInfo[] createMenuItems() {
         return new MenuItemInfo[]{ //
-                new MenuItemInfo("Home", LineAwesomeIcon.CHART_AREA_SOLID.create(), HomeView.class), //
+//                new MenuItemInfo("Home", LineAwesomeIcon.CHART_AREA_SOLID.create(), HomeView.class), //
                 new MenuItemInfo("Baskets",LineAwesomeIcon.BABY_CARRIAGE_SOLID.create(),BasketList.class),
 //                new MenuItemInfo("User Notifications",LineAwesomeIcon.BABY_CARRIAGE_SOLID.create(), ListUserNotifications.class),
 

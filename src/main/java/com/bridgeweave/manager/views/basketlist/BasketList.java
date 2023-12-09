@@ -19,6 +19,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.renderer.NativeButtonRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.auth.AccessAnnotationChecker;
 import jakarta.annotation.security.PermitAll;
 import org.springframework.security.core.Authentication;
@@ -29,6 +30,7 @@ import java.util.Optional;
 @PageTitle("BasketList")
 @PermitAll
 @Route(value = "basket-list", layout = MainLayout.class)
+@RouteAlias(value = "", layout = MainLayout.class)
 @Uses(Icon.class)
 public class BasketList extends Composite<VerticalLayout> {
     private BasketService basketService;
