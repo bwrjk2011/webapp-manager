@@ -32,11 +32,11 @@ public class TaskSyncBasketToPrometheus {
 
     private ExecutorService executorService = Executors.newFixedThreadPool(5);
 
-    private static PortfolioRequest createPortfolioRequest(Long basketId, ArrayList<ModelPortfolio> equities) {
+    private static PortfolioRequest createPortfolioRequest(String portfolioId, ArrayList<ModelPortfolio> equities) {
         ArrayList<Constituent> constituents = new ArrayList<>();
 
         PortfolioRequest request = new PortfolioRequest();
-        request.setPortfolioId("rjk002");
+        request.setPortfolioId(portfolioId);
         request.setStartDate("2024-01-01");
         request.setEndDate("2024-01-30");
         request.setStatus("active");
@@ -47,7 +47,7 @@ public class TaskSyncBasketToPrometheus {
 
             Constituent constituent = new Constituent();
             constituent.setSymbol(modelPortfolio.getSymbol());
-            constituent.setWeight(0.1);
+            constituent.setWeight(modelPortfolio.getAllocation());
             constituent.setIsin("entity");
             constituent.setStatus("active");
             constituents.add(constituent);
@@ -84,10 +84,10 @@ public class TaskSyncBasketToPrometheus {
         }
     }
 
-    private void syncModelPortfolio(Long basketId, ArrayList<ModelPortfolio> equities) {
+    private void syncModelPortfolio(String portfolioId, ArrayList<ModelPortfolio> equities) {
         try {
             System.out.println("Starting syncModelPortfolio");
-            PortfolioRequest portfolioRequest = createPortfolioRequest(basketId,equities);
+            PortfolioRequest portfolioRequest = createPortfolioRequest(portfolioId,equities);
             postRequest(portfolioRequest);
             System.out.println("Completed syncModelPortfolio");
         } catch (Exception e) {
@@ -97,11 +97,11 @@ public class TaskSyncBasketToPrometheus {
 
     }
 
-    public void startAsyncTask(Long basketId, ArrayList<ModelPortfolio> equities) {
-        System.out.println("Starting Task for basketId " + basketId);
+    public void startAsyncTask(String portfolioId, ArrayList<ModelPortfolio> equities) {
+        System.out.println("Starting Task for portfolioId " + portfolioId);
         System.out.println("Equities size " + equities.size());
 
-        CompletableFuture.runAsync(() -> syncModelPortfolio(basketId, equities), executorService).thenRun(()->notifyUser("Done"));
+        CompletableFuture.runAsync(() -> syncModelPortfolio(portfolioId, equities), executorService).thenRun(()->notifyUser("Done"));
         System.out.println("Completed Task");
     }
 

@@ -7,7 +7,7 @@ public class Constituent {
     private String symbol;
 
     @JsonProperty("weight")
-    private double weight;
+    private float weight;
 
     @JsonProperty("isin")
     private String isin;
@@ -27,7 +27,7 @@ public class Constituent {
         return weight;
     }
 
-    public void setWeight(double weight) {
+    public void setWeight(float weight) {
         this.weight = weight;
     }
 

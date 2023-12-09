@@ -1,13 +1,11 @@
 package com.bridgeweave.manager.views.modelportfoliodetail;
 
-import com.bridgeweave.manager.data.Equities;
 import com.bridgeweave.manager.data.ModelPortfolio;
 import com.bridgeweave.manager.data.SamplePerson;
 import com.bridgeweave.manager.data.User;
 import com.bridgeweave.manager.security.AuthenticatedUser;
 import com.bridgeweave.manager.services.EquitiesService;
 import com.bridgeweave.manager.services.ModelPortfolioService;
-import com.bridgeweave.manager.services.SamplePersonService;
 import com.bridgeweave.manager.services.UserNotificationService;
 import com.bridgeweave.manager.tasks.TaskRebalancePortfolioFromFile;
 import com.bridgeweave.manager.tasks.TaskSyncBasketToPrometheus;
@@ -37,11 +35,8 @@ import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AccessAnnotationChecker;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
-import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import jakarta.annotation.security.PermitAll;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Expression;
@@ -55,7 +50,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer;
@@ -77,7 +71,7 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
     private EquitiesService equitiesService;
 
     // List of Equities associated with a Portfolio.  Needed to invoke sync operation
-    private ArrayList<ModelPortfolio> byBid;
+    private ArrayList<ModelPortfolio> modelPolfolioConstituents;
 
     private Grid<ModelPortfolio> grid;
     private Filters filters;
@@ -97,8 +91,8 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
 
             List<ModelPortfolio> equityErrorsByBasketId = modelPortfolioService.getEquityErrorsByBasketId(basketId);
 
-            byBid = modelPortfolioService.getByBid(basketId);
-            int modelCount = byBid.size();
+            modelPolfolioConstituents = modelPortfolioService.getByBid(basketId);
+            int modelCount = modelPolfolioConstituents.size();
             System.out.println("RJK. count of the number of equities " + modelCount);
 
             if (buttonSync !=null){
@@ -408,7 +402,7 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
         buttonSync.setEnabled(Boolean.FALSE);
         buttonSync.addClickListener(buttonClickEvent -> {
             Notification.show("Synchronising with Prometheus, calling Async operation");
-            new TaskSyncBasketToPrometheus().startAsyncTask(basketId,byBid);
+            new TaskSyncBasketToPrometheus().startAsyncTask("", modelPolfolioConstituents);
         });
 
 

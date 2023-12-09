@@ -12,16 +12,6 @@ import java.util.List;
 
 public class AppInvokeServices {
 
-    public void sendit() throws UnirestException {
-        Unirest.setTimeouts(0, 0);
-        HttpResponse<String> stringHttpResponse = Unirest.post("https://portfolio-catalogue-service-dev.bridgeweave.net:4439/portfolio-catalogue/rebalance")
-                .header("Content-Type", "application/json")
-                .body("{\r\n  \"portfolioId\": \"rjk002\",\r\n  \"startDate\": \"2024-01-01\",\r\n  \"endDate\": \"2024-01-30\",\r\n  \"status\": \"active\",\r\n  \"createdBy\": \"chetan\",\r\n  \"constituents\": [\r\n    {\r\n      \"symbol\": \"AXISBANK\",\r\n      \"weight\": 0.5,\r\n      \"isin\": \"entity\",\r\n      \"status\": \"active\"\r\n    },\r\n    {\r\n      \"symbol\": \"ICICIBANK\",\r\n      \"weight\": 0.5,\r\n      \"isin\": \"entity\",\r\n      \"status\": \"active\"\r\n    }\r\n    \r\n  ]\r\n}").asString();
-
-    }
-
-
-
     public static void main(String args[]){
         System.out.println("HI");
 
@@ -47,25 +37,25 @@ public class AppInvokeServices {
 
         Constituent constituent1 = new Constituent();
         constituent1.setSymbol("KOTAKBANK");
-        constituent1.setWeight(0.3);
+        constituent1.setWeight(0.3f);
         constituent1.setIsin("entity");
         constituent1.setStatus("active");
 
         Constituent constituent2 = new Constituent();
         constituent2.setSymbol("MARUTI");
-        constituent2.setWeight(0.3);
+        constituent2.setWeight(0.3f);
         constituent2.setIsin("entity");
         constituent2.setStatus("active");
 
         Constituent constituent3 = new Constituent();
         constituent3.setSymbol("TATAMOTORS");
-        constituent3.setWeight(0.3);
+        constituent3.setWeight(0.3f);
         constituent3.setIsin("entity");
         constituent3.setStatus("active");
 
         Constituent constituent4 = new Constituent();
         constituent4.setSymbol("WIPRO");
-        constituent4.setWeight(0.1);
+        constituent4.setWeight(0.1f);
         constituent4.setIsin("entity");
         constituent4.setStatus("active");
 
