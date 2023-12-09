@@ -7,9 +7,13 @@ and manage baskets and their model portfolios.
 The application is driven from the properties file.
 This can be found here:
 
+
 ![Config](./docs/config2.png)
 ```/src/main/resources/application.properties```
 
+
+For each environment we need to set the base of the YouTrade REST API.
+This enables the deployed application to integrate with the appropriate set of services.
 
 ## Running the application
 The project is a standard Maven project. To run it from the command line,
