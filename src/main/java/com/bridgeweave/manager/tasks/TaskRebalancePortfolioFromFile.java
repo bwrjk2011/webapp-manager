@@ -56,8 +56,8 @@ public class TaskRebalancePortfolioFromFile  {
 
                     // Assuming row[0] is ticker id and row[1] is the allocation as a string
                     String symbol = row.get(0);
-                    String companyName = row.get(1);
-                    Float allocation = Float.parseFloat(row.get(2));
+                    //String companyName = row.get(1);
+                    Float allocation = Float.parseFloat(row.get(1));
 
                     boolean errorFound = Boolean.FALSE;
                     String errorMessage = "";
@@ -70,6 +70,19 @@ public class TaskRebalancePortfolioFromFile  {
                         } else{
                             System.out.println("Found in Universe " + symbol);
                             errorMessage="Equity " + symbol + " found in Universe";
+
+                            // Create ModelPortfolio object
+                            ModelPortfolio modelPortfolio = new ModelPortfolio();
+                            modelPortfolio.setBid(basketId);
+                            modelPortfolio.setSymbol(symbol);
+                            modelPortfolio.setName(equityBySymbol.getCompanyName());
+                            modelPortfolio.setAllocation(allocation);
+                            modelPortfolio.setHasError(errorFound);
+                            modelPortfolio.setErrorMessage(errorMessage);
+
+                            modelPortfolioService.update(modelPortfolio);
+
+
                         }
                     } catch (Exception e){
                         System.out.println(e);
@@ -77,16 +90,16 @@ public class TaskRebalancePortfolioFromFile  {
                         errorMessage = "Equity not found in Universe of stocks";
                     }
 
-                    // Create ModelPortfolio object
-                    ModelPortfolio modelPortfolio = new ModelPortfolio();
-                    modelPortfolio.setBid(basketId);
-                    modelPortfolio.setSymbol(symbol);
-                    modelPortfolio.setName(companyName);
-                    modelPortfolio.setAllocation(allocation);
-                    modelPortfolio.setHasError(errorFound);
-                    modelPortfolio.setErrorMessage(errorMessage);
-
-                    modelPortfolioService.update(modelPortfolio);
+//                    // Create ModelPortfolio object
+//                    ModelPortfolio modelPortfolio = new ModelPortfolio();
+//                    modelPortfolio.setBid(basketId);
+//                    modelPortfolio.setSymbol(symbol);
+//                    modelPortfolio.setName(companyName);
+//                    modelPortfolio.setAllocation(allocation);
+//                    modelPortfolio.setHasError(errorFound);
+//                    modelPortfolio.setErrorMessage(errorMessage);
+//
+//                    modelPortfolioService.update(modelPortfolio);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

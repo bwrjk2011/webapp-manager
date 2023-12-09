@@ -22,6 +22,7 @@ import com.vaadin.flow.component.notification.Notification;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.FileReader;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -47,7 +48,7 @@ public class TaskSyncBasketToPrometheus {
 
             Constituent constituent = new Constituent();
             constituent.setSymbol(modelPortfolio.getSymbol());
-            constituent.setWeight(modelPortfolio.getAllocation());
+            constituent.setWeight(0.2d);
             constituent.setIsin("entity");
             constituent.setStatus("active");
             constituents.add(constituent);

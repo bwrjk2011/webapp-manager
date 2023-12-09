@@ -402,7 +402,7 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
         buttonSync.setEnabled(Boolean.FALSE);
         buttonSync.addClickListener(buttonClickEvent -> {
             Notification.show("Synchronising with Prometheus, calling Async operation");
-            new TaskSyncBasketToPrometheus().startAsyncTask("", modelPolfolioConstituents);
+            new TaskSyncBasketToPrometheus().startAsyncTask("ABC123A3", modelPolfolioConstituents);
         });
 
 
