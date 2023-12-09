@@ -63,7 +63,7 @@ import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer;
 public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Long>  {
 
     private Long basketId;
-
+    private Basket basket;
     private AuthenticatedUser authenticatedUser;
     private AccessAnnotationChecker accessChecker;
     private User user;
@@ -77,6 +77,8 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
     // List of Equities associated with a Portfolio.  Needed to invoke sync operation
     private ArrayList<ModelPortfolio> modelPolfolioConstituents;
 
+
+    private VerticalLayout vlHeader = new VerticalLayout();
     private Grid<ModelPortfolio> grid;
     private Filters filters;
     private Upload upload;
@@ -91,7 +93,14 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
         System.out.println(event);
         if (basketId != null){
 
+            Optional<Basket> maybeBasket = basketService.get(basketId);
+            if (maybeBasket.isPresent()){
+                basket = maybeBasket.get();
+            }
+
             grid.setItems(modelPortfolioService.getByBid(basketId));
+
+            vlHeader.add(createBasketHeader());
 
             List<ModelPortfolio> equityErrorsByBasketId = modelPortfolioService.getEquityErrorsByBasketId(basketId);
 
@@ -475,11 +484,33 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
 
         filters = new Filters(() -> refreshGrid());
 //        VerticalLayout layout = new VerticalLayout(createMobileFilters(), filters, createGrid());
-        VerticalLayout layout = new VerticalLayout(createGrid(),createUpload(), createSync());
+        VerticalLayout layout = new VerticalLayout(vlHeader, createBasketHeader(), createGrid(),createUpload(), createSync());
         layout.setSizeFull();
         layout.setPadding(false);
         layout.setSpacing(false);
         add(layout);
+    }
+
+    private Component createBasketHeader() {
+        HorizontalLayout hl = new HorizontalLayout();
+
+
+        if (basket !=null){
+            String basketName = basket.getBasketName();
+            String basketId1 = basket.getBasketId();
+            String manager = basket.getManager();
+            String basketDescription = basket.getBasketDescription();
+
+            H1 h1BasketName = new H1(basketName);
+            H3 h3BasketId = new H3("("+basketId1+")");
+
+            hl.add(h1BasketName);
+            hl.add(h3BasketId);
+
+
+        }
+
+        return hl;
     }
 
 }
