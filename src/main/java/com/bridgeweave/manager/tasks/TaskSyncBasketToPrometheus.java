@@ -48,7 +48,7 @@ public class TaskSyncBasketToPrometheus {
 
             Constituent constituent = new Constituent();
             constituent.setSymbol(modelPortfolio.getSymbol());
-            constituent.setWeight(0.2d);
+            constituent.setWeight(modelPortfolio.getAllocation());
             constituent.setIsin("entity");
             constituent.setStatus("active");
             constituents.add(constituent);

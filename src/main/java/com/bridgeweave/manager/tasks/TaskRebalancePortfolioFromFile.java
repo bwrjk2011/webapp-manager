@@ -57,7 +57,7 @@ public class TaskRebalancePortfolioFromFile  {
                     // Assuming row[0] is ticker id and row[1] is the allocation as a string
                     String symbol = row.get(0);
                     //String companyName = row.get(1);
-                    Float allocation = Float.parseFloat(row.get(1));
+                    Double allocationWeight = Double.parseDouble(row.get(1));
 
                     boolean errorFound = Boolean.FALSE;
                     String errorMessage = "";
@@ -76,7 +76,7 @@ public class TaskRebalancePortfolioFromFile  {
                             modelPortfolio.setBid(basketId);
                             modelPortfolio.setSymbol(symbol);
                             modelPortfolio.setName(equityBySymbol.getCompanyName());
-                            modelPortfolio.setAllocation(allocation);
+                            modelPortfolio.setAllocation(allocationWeight);
                             modelPortfolio.setHasError(errorFound);
                             modelPortfolio.setErrorMessage(errorMessage);
 

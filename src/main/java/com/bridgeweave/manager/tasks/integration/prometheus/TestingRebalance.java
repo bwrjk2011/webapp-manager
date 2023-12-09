@@ -21,7 +21,7 @@ public class TestingRebalance {
         modelPortfolio.setBid(100l);
         modelPortfolio.setSymbol("bbb");
         modelPortfolio.setName("BBB Ltd.");
-        modelPortfolio.setAllocation(1f);
+        modelPortfolio.setAllocation(0.2);
 
 
         modelPolfolioConstituents.add(modelPortfolio);

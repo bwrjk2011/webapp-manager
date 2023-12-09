@@ -9,7 +9,7 @@ public class ModelPortfolio extends AbstractEntity{
     private Long bid;
     private String symbol;
     private String name;
-    private Float allocation;
+    private Double allocation;
     private String rationale;
 
     private Boolean hasError;
@@ -59,11 +59,11 @@ public class ModelPortfolio extends AbstractEntity{
         this.name = name;
     }
 
-    public Float getAllocation() {
+    public Double getAllocation() {
         return allocation;
     }
 
-    public void setAllocation(Float allocation) {
+    public void setAllocation(Double allocation) {
         this.allocation = allocation;
     }
 
