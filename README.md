@@ -7,7 +7,7 @@ and manage baskets and their model portfolios.
 The application is driven from the properties file.
 This can be found here:
 
-![Config](./docs/config.png)
+![Config](./docs/config2.png)
 ```/src/main/resources/application.properties```
 
 
