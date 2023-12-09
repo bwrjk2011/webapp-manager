@@ -21,7 +21,7 @@ insert into basket(version, id,owner_company_id, owner_company_name, basket_id, 
 insert into basket(version, id,owner_company_id, owner_company_name, basket_id,  basket_name, manager,bench_mark) values (1, 55,'3000','InvestorAI','INTLCT','Intellect','Ben','Nifty50')
 insert into basket(version, id,owner_company_id, owner_company_name, basket_id,  basket_name, manager,bench_mark) values (1, 56,'3000','InvestorAI','SCTRNVGTR','Sector navigator','Ben','Nifty50')
 insert into basket(version, id,owner_company_id, owner_company_name, basket_id,  basket_name, manager,bench_mark) values (1, 57,'3000','InvestorAI','TRLBLZRS','Trailblazers','Ben','Nifty50')
-
+insert into basket(version, id,owner_company_id, owner_company_name, basket_id,  basket_name, manager,bench_mark) values (1, 58,'3000','InvestorAI','ABC123A3','Test Portfolio','Rich','Nifty50')
 
 
 --

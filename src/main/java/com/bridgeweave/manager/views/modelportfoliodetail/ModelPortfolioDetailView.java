@@ -1,9 +1,11 @@
 package com.bridgeweave.manager.views.modelportfoliodetail;
 
+import com.bridgeweave.manager.data.Basket;
 import com.bridgeweave.manager.data.ModelPortfolio;
 import com.bridgeweave.manager.data.SamplePerson;
 import com.bridgeweave.manager.data.User;
 import com.bridgeweave.manager.security.AuthenticatedUser;
+import com.bridgeweave.manager.services.BasketService;
 import com.bridgeweave.manager.services.EquitiesService;
 import com.bridgeweave.manager.services.ModelPortfolioService;
 import com.bridgeweave.manager.services.UserNotificationService;
@@ -69,6 +71,8 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
     private UserNotificationService userNotificationService;
     private final ModelPortfolioService modelPortfolioService;
     private EquitiesService equitiesService;
+
+    private BasketService basketService;
 
     // List of Equities associated with a Portfolio.  Needed to invoke sync operation
     private ArrayList<ModelPortfolio> modelPolfolioConstituents;
@@ -402,10 +406,13 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
         buttonSync.setEnabled(Boolean.FALSE);
         buttonSync.addClickListener(buttonClickEvent -> {
             Notification.show("Synchronising with Prometheus, calling Async operation");
-            new TaskSyncBasketToPrometheus().startAsyncTask("ABC123A3", modelPolfolioConstituents);
+            Optional<Basket> maybeBasket = basketService.get(basketId);
+            if (maybeBasket.isPresent()){
+                Basket basket = maybeBasket.get();
+                String formalBasketId = basket.getBasketId();
+                new TaskSyncBasketToPrometheus().startAsyncTask(formalBasketId, modelPolfolioConstituents);
+            }
         });
-
-
 
         VerticalLayout content = new VerticalLayout(title, text1, text2, buttonSync);
         content.setSpacing(false);
@@ -440,7 +447,8 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
             AccessAnnotationChecker accessChecker,
             ModelPortfolioService modelPortfolioService,
             UserNotificationService userNotificationService,
-            EquitiesService equitiesService
+            EquitiesService equitiesService,
+            BasketService basketService
             )  {
 
         this.modelPortfolioService = modelPortfolioService;
@@ -448,6 +456,8 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
         this.accessChecker = accessChecker;
         this.userNotificationService = userNotificationService;
         this.equitiesService = equitiesService;
+        this.basketService = basketService;
+
 
         Optional<User> maybeUser = authenticatedUser.get();
         if (maybeUser.isPresent()) {
@@ -471,7 +481,5 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
         layout.setSpacing(false);
         add(layout);
     }
-
-
 
 }

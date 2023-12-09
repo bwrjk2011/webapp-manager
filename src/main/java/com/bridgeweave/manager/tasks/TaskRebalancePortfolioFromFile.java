@@ -127,6 +127,10 @@ public class TaskRebalancePortfolioFromFile  {
         System.out.println("Starting Task for user " + userId);
         System.out.println("BasketId  " + basketId);
         System.out.println("filename  " + filename);
+
+
+
+
         CompletableFuture.runAsync(() -> processFile(userId, basketId, filename), executorService).thenRun(()->notifyUser("Done"));
         System.out.println("Completed Task");
     }

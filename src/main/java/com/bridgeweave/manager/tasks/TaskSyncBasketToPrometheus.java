@@ -23,6 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.FileReader;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -36,10 +38,17 @@ public class TaskSyncBasketToPrometheus {
     private static PortfolioRequest createPortfolioRequest(String portfolioId, ArrayList<ModelPortfolio> equities) {
         ArrayList<Constituent> constituents = new ArrayList<>();
 
+        // Get today and the date in two weeks
+        LocalDate today = LocalDate.now();
+        LocalDate twoWeeksLater = today.plusWeeks(2);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String todayString = today.format(formatter);
+        String twoWeeksLaterString = twoWeeksLater.format(formatter);
+
         PortfolioRequest request = new PortfolioRequest();
         request.setPortfolioId(portfolioId);
-        request.setStartDate("2024-01-01");
-        request.setEndDate("2024-01-30");
+        request.setStartDate(todayString);
+        request.setEndDate(twoWeeksLaterString);
         request.setStatus("active");
         request.setCreatedBy("Rich");
 
