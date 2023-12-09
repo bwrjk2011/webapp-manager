@@ -5,10 +5,10 @@ insert into user_roles (user_id, roles) values ('1', 'USER')
 insert into user_roles (user_id, roles) values ('2', 'ADMIN')
 
 
-insert into basket(version, id,owner_company_id, owner_company_name, basket_name, manager,bench_mark) values (1, 1,'1000','Investor AI','Company1.Basket 1','Rich Manager','Bench Mark1')
-insert into basket(version, id,owner_company_id, owner_company_name, basket_name, manager,bench_mark) values (1, 2,'1000','Investor AI','Company1.Basket 2','Peter Manager','Bench Mark2')
-insert into basket(version, id,owner_company_id, owner_company_name, basket_name, manager,bench_mark) values (1, 3,'1000','Investor AI','Company1.Basket 3','Johnny Manager','Bench Mark3')
-insert into basket(version, id,owner_company_id, owner_company_name, basket_name, manager,bench_mark) values (1, 4,'2000','Index Tracker','Company2.Basket 1','Frank Manager','Bench Mark2.1')
+insert into basket(version, id,owner_company_id, owner_company_name, basket_id, basket_name, manager,bench_mark) values (1, 1,'1000','Investor AI','RJK001','Company1.Basket 1','Rich Manager','Bench Mark1')
+insert into basket(version, id,owner_company_id, owner_company_name, basket_id,  basket_name, manager,bench_mark) values (1, 2,'1000','Investor AI','RJK002','Company1.Basket 2','Peter Manager','Bench Mark2')
+insert into basket(version, id,owner_company_id, owner_company_name, basket_id,  basket_name, manager,bench_mark) values (1, 3,'1000','Investor AI','RJK003','Company1.Basket 3','Johnny Manager','Bench Mark3')
+insert into basket(version, id,owner_company_id, owner_company_name, basket_id,  basket_name, manager,bench_mark) values (1, 4,'2000','Index Tracker','RJK004','Company2.Basket 1','Frank Manager','Bench Mark2.1')
 --
 
 INSERT INTO model_portfolio (version, id, owner_company_id, owner_company_name, bid, symbol, name, allocation, rationale) VALUES (1, 1, '2000', 'Company Name 2', 3, 'TICK11', '3 Company 11', 0.1, 'Rationale 1')

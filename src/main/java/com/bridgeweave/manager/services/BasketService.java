@@ -54,6 +54,12 @@ public class BasketService {
         return (ArrayList<Basket>) repository.findAll();
     }
 
+    public ArrayList<Basket> getBasketsByOwnerCompanyId(String ownerCompanyId){
+        return (ArrayList<Basket>) repository.getBasketsByOwnerCompanyId(ownerCompanyId);
+    }
+
+
+
     public int count() {
         return (int) repository.count();
     }

@@ -7,9 +7,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 public class Basket extends AbstractEntity{
     private String ownerCompanyId;
+
+
+
     private String ownerCompanyName;
     private String ownerCompanyLogoURL;
 
+    private String basketId;
     private String basketName;
     private String manager;
     @DateTimeFormat
@@ -120,7 +124,29 @@ public class Basket extends AbstractEntity{
         this.basketMethodology = basketMethodology;
     }
 
+    public String getOwnerCompanyName() {
+        return ownerCompanyName;
+    }
 
+    public void setOwnerCompanyName(String ownerCompanyName) {
+        this.ownerCompanyName = ownerCompanyName;
+    }
+
+    public String getOwnerCompanyLogoURL() {
+        return ownerCompanyLogoURL;
+    }
+
+    public void setOwnerCompanyLogoURL(String ownerCompanyLogoURL) {
+        this.ownerCompanyLogoURL = ownerCompanyLogoURL;
+    }
+
+    public String getBasketId() {
+        return basketId;
+    }
+
+    public void setBasketId(String basketId) {
+        this.basketId = basketId;
+    }
 
 
 
