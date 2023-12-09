@@ -1,18 +1,11 @@
 package com.bridgeweave.manager.views;
 
 import com.bridgeweave.manager.data.User;
-import com.bridgeweave.manager.data.UserNotifications;
 import com.bridgeweave.manager.security.AuthenticatedUser;
 import com.bridgeweave.manager.services.UserNotificationService;
 import com.bridgeweave.manager.views.about.AboutView;
-import com.bridgeweave.manager.views.basketdetail.BasketDetailView;
-import com.bridgeweave.manager.views.basketdetail.Baskets2View;
 import com.bridgeweave.manager.views.basketlist.BasketList;
-import com.bridgeweave.manager.views.helloworld.HelloWorldView;
-import com.bridgeweave.manager.views.home.HomeView;
-import com.bridgeweave.manager.views.modelportfoliodetail.ModelPortfolioDetailView;
 import com.bridgeweave.manager.views.user.notifications.ListUserNotifications;
-import com.bridgeweave.manager.views.wrapper.WrapperView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.avatar.Avatar;
@@ -52,7 +45,6 @@ import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
 /**
@@ -228,6 +220,8 @@ public class MainLayout extends AppLayout {
         return new MenuItemInfo[]{ //
 //                new MenuItemInfo("Home", LineAwesomeIcon.CHART_AREA_SOLID.create(), HomeView.class), //
                 new MenuItemInfo("Baskets",LineAwesomeIcon.BABY_CARRIAGE_SOLID.create(),BasketList.class),
+                new MenuItemInfo("About",LineAwesomeIcon.BABY_CARRIAGE_SOLID.create(),AboutView.class),
+//
 //                new MenuItemInfo("User Notifications",LineAwesomeIcon.BABY_CARRIAGE_SOLID.create(), ListUserNotifications.class),
 
 //                new MenuItemInfo("Baskets2", LineAwesomeIcon.BRIEFCASE_SOLID.create(), Baskets2View.class), //
