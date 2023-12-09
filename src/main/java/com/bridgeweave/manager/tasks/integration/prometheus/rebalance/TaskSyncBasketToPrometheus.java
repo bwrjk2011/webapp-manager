@@ -1,32 +1,20 @@
-package com.bridgeweave.manager.tasks;
+package com.bridgeweave.manager.tasks.integration.prometheus.rebalance;
 
-import com.bridgeweave.manager.data.Equities;
 import com.bridgeweave.manager.data.ModelPortfolio;
-import com.bridgeweave.manager.data.UserNotifications;
-import com.bridgeweave.manager.services.EquitiesService;
-import com.bridgeweave.manager.services.ModelPortfolioService;
-import com.bridgeweave.manager.services.UserNotificationService;
-import com.bridgeweave.manager.tasks.integration.prometheus.Constituent;
-import com.bridgeweave.manager.tasks.integration.prometheus.PortfolioRequest;
+import com.bridgeweave.manager.tasks.integration.prometheus.rebalance.Constituent;
+import com.bridgeweave.manager.tasks.integration.prometheus.rebalance.PortfolioRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.csv.CSVReader;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.notification.Notification;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Value;
 
-import java.io.FileReader;
-import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -34,6 +22,9 @@ import java.util.concurrent.Executors;
 public class TaskSyncBasketToPrometheus {
 
     private ExecutorService executorService = Executors.newFixedThreadPool(5);
+
+    @Value("${app.integration.api.baseurl}")
+    private static String baseURL;
 
     private static PortfolioRequest createPortfolioRequest(String portfolioId, ArrayList<ModelPortfolio> equities) {
         ArrayList<Constituent> constituents = new ArrayList<>();
@@ -67,8 +58,11 @@ public class TaskSyncBasketToPrometheus {
         return request;
     }
 
-    private static void postRequest(PortfolioRequest request) {
-        String endPoint = "https://portfolio-catalogue-service-dev.bridgeweave.net:4439/portfolio-catalogue/rebalance";
+    private static void postRequest(PortfolioRequest request, String baseURL) {
+
+        String endPoint = baseURL + "/portfolio-catalogue/rebalance";
+        System.out.println("BaseURL = " +baseURL );
+        System.out.println("endPoint = " +endPoint );
 
         try {
             ObjectMapper objectMapper = new ObjectMapper();
@@ -94,11 +88,12 @@ public class TaskSyncBasketToPrometheus {
         }
     }
 
-    private void syncModelPortfolio(String portfolioId, ArrayList<ModelPortfolio> equities) {
+    private void syncModelPortfolio(String portfolioId, ArrayList<ModelPortfolio> equities, String baseURL) {
         try {
             System.out.println("Starting syncModelPortfolio");
             PortfolioRequest portfolioRequest = createPortfolioRequest(portfolioId,equities);
-            postRequest(portfolioRequest);
+
+            postRequest(portfolioRequest,baseURL);
             System.out.println("Completed syncModelPortfolio");
         } catch (Exception e) {
             e.printStackTrace();
@@ -107,11 +102,11 @@ public class TaskSyncBasketToPrometheus {
 
     }
 
-    public void startAsyncTask(String portfolioId, ArrayList<ModelPortfolio> equities) {
+    public void startAsyncTask(String portfolioId, ArrayList<ModelPortfolio> equities, String baseURL) {
         System.out.println("Starting Task for portfolioId " + portfolioId);
         System.out.println("Equities size " + equities.size());
 
-        CompletableFuture.runAsync(() -> syncModelPortfolio(portfolioId, equities), executorService).thenRun(()->notifyUser("Done"));
+        CompletableFuture.runAsync(() -> syncModelPortfolio(portfolioId, equities, baseURL), executorService).thenRun(()->notifyUser("Done"));
         System.out.println("Completed Task");
     }
 

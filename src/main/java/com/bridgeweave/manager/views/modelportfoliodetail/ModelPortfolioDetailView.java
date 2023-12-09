@@ -9,8 +9,8 @@ import com.bridgeweave.manager.services.BasketService;
 import com.bridgeweave.manager.services.EquitiesService;
 import com.bridgeweave.manager.services.ModelPortfolioService;
 import com.bridgeweave.manager.services.UserNotificationService;
-import com.bridgeweave.manager.tasks.TaskRebalancePortfolioFromFile;
-import com.bridgeweave.manager.tasks.TaskSyncBasketToPrometheus;
+import com.bridgeweave.manager.tasks.integration.prometheus.localportfolios.TaskRebalancePortfolioFromFile;
+import com.bridgeweave.manager.tasks.integration.prometheus.rebalance.TaskSyncBasketToPrometheus;
 import com.bridgeweave.manager.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Text;
@@ -52,6 +52,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.domain.Specification;
 import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer;
@@ -61,6 +63,10 @@ import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer;
 @PermitAll
 @Uses(Icon.class)
 public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Long>  {
+
+    // Data and Services
+
+    private static String baseURL;
 
     private Long basketId;
     private Basket basket;
@@ -74,9 +80,13 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
 
     private BasketService basketService;
 
-    // List of Equities associated with a Portfolio.  Needed to invoke sync operation
+    private Environment environment;
+
+
     private ArrayList<ModelPortfolio> modelPolfolioConstituents;
 
+
+    // UI Related
 
     private VerticalLayout vlHeader = new VerticalLayout();
     private Grid<ModelPortfolio> grid;
@@ -419,7 +429,7 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
             if (maybeBasket.isPresent()){
                 Basket basket = maybeBasket.get();
                 String formalBasketId = basket.getBasketId();
-                new TaskSyncBasketToPrometheus().startAsyncTask(formalBasketId, modelPolfolioConstituents);
+                new TaskSyncBasketToPrometheus().startAsyncTask(formalBasketId, modelPolfolioConstituents,baseURL);
             }
         });
 
@@ -457,7 +467,8 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
             ModelPortfolioService modelPortfolioService,
             UserNotificationService userNotificationService,
             EquitiesService equitiesService,
-            BasketService basketService
+            BasketService basketService,
+            Environment environment
             )  {
 
         this.modelPortfolioService = modelPortfolioService;
@@ -466,6 +477,15 @@ public class ModelPortfolioDetailView extends Div implements HasUrlParameter<Lon
         this.userNotificationService = userNotificationService;
         this.equitiesService = equitiesService;
         this.basketService = basketService;
+        this.environment = environment;
+
+
+
+        System.out.println("***");
+        System.out.println("baseURL --> " + baseURL);
+        String integrationRESTServiceBaseURL = environment.getProperty("app.integration.api.baseurl");
+        baseURL = integrationRESTServiceBaseURL;
+        System.out.println("property --> " + integrationRESTServiceBaseURL);
 
 
         Optional<User> maybeUser = authenticatedUser.get();

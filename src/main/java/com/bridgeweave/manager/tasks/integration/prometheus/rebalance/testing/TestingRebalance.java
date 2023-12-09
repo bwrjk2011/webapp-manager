@@ -1,7 +1,7 @@
-package com.bridgeweave.manager.tasks.integration.prometheus;
+package com.bridgeweave.manager.tasks.integration.prometheus.rebalance.testing;
 
 import com.bridgeweave.manager.data.ModelPortfolio;
-import com.bridgeweave.manager.tasks.TaskSyncBasketToPrometheus;
+import com.bridgeweave.manager.tasks.integration.prometheus.rebalance.TaskSyncBasketToPrometheus;
 
 import java.util.ArrayList;
 
@@ -25,7 +25,8 @@ public class TestingRebalance {
 
 
         modelPolfolioConstituents.add(modelPortfolio);
-        new TaskSyncBasketToPrometheus().startAsyncTask(portfolioId, modelPolfolioConstituents);
+        String baseURL = "https://portfolio-catalogue-service-dev.bridgeweave.net:4439";
+        new TaskSyncBasketToPrometheus().startAsyncTask(portfolioId, modelPolfolioConstituents,baseURL);
 
     }
 }

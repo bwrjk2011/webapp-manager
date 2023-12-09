@@ -152,7 +152,6 @@ public class MainLayout extends AppLayout {
         if (maybeUser.isPresent()) {
             User user = maybeUser.get();
 
-//            Hack job rjk
             Integer notificationCount = 3;
             badge = new Span(String.valueOf(notificationCount));
             badge.getElement().getThemeList().add("badge");
@@ -181,9 +180,7 @@ public class MainLayout extends AppLayout {
             div.getElement().getStyle().set("align-items", "center");
             div.getElement().getStyle().set("gap", "var(--lumo-space-s)");
             userName.add(div);
-//            userName.getSubMenu().addItem("Admin", e -> {
-//                authenticatedUser.logout();
-//            });
+
             userName.getSubMenu().addItem("Notifications", e -> {
                 userName.getUI().ifPresent(ui -> ui.navigate(
                         ListUserNotifications.class));
@@ -200,7 +197,6 @@ public class MainLayout extends AppLayout {
         Nav nav = new Nav();
         nav.addClassNames(Display.FLEX, Overflow.AUTO, Padding.Horizontal.MEDIUM, Padding.Vertical.XSMALL);
 
-        // Wrap the links in a list; improves accessibility
         UnorderedList list = new UnorderedList();
         list.addClassNames(Display.FLEX, Gap.SMALL, ListStyleType.NONE, Margin.NONE, Padding.NONE);
         nav.add(list);
@@ -221,21 +217,6 @@ public class MainLayout extends AppLayout {
 //                new MenuItemInfo("Home", LineAwesomeIcon.CHART_AREA_SOLID.create(), HomeView.class), //
                 new MenuItemInfo("Baskets",LineAwesomeIcon.BABY_CARRIAGE_SOLID.create(),BasketList.class),
                 new MenuItemInfo("About",LineAwesomeIcon.BABY_CARRIAGE_SOLID.create(),AboutView.class),
-//
-//                new MenuItemInfo("User Notifications",LineAwesomeIcon.BABY_CARRIAGE_SOLID.create(), ListUserNotifications.class),
-
-//                new MenuItemInfo("Baskets2", LineAwesomeIcon.BRIEFCASE_SOLID.create(), Baskets2View.class), //
-//
-//                new MenuItemInfo("Basket Detail", LineAwesomeIcon.USER.create(), BasketDetailView.class), //
-//
-//                new MenuItemInfo("Wrapper", LineAwesomeIcon.PENCIL_RULER_SOLID.create(), WrapperView.class), //
-//
-//                new MenuItemInfo("Model Portfolio Detail", LineAwesomeIcon.FILTER_SOLID.create(),
-//                        ModelPortfolioDetailView.class), //
-
-//                new MenuItemInfo("Hello World", LineAwesomeIcon.GLOBE_SOLID.create(), HelloWorldView.class), //
-//                new MenuItemInfo("About", LineAwesomeIcon.FILE.create(), AboutView.class), //
-
         };
     }
 

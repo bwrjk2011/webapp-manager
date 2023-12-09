@@ -1,4 +1,4 @@
-package com.bridgeweave.manager.tasks.integration.prometheus;
+package com.bridgeweave.manager.tasks.integration.prometheus.rebalance;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

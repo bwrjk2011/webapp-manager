@@ -1,4 +1,4 @@
-package com.bridgeweave.manager.tasks;
+package com.bridgeweave.manager.tasks.integration.prometheus.localportfolios;
 
 import com.bridgeweave.manager.data.Equities;
 import com.bridgeweave.manager.data.ModelPortfolio;
@@ -127,9 +127,6 @@ public class TaskRebalancePortfolioFromFile  {
         System.out.println("Starting Task for user " + userId);
         System.out.println("BasketId  " + basketId);
         System.out.println("filename  " + filename);
-
-
-
 
         CompletableFuture.runAsync(() -> processFile(userId, basketId, filename), executorService).thenRun(()->notifyUser("Done"));
         System.out.println("Completed Task");
