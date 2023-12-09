@@ -8,8 +8,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class Basket extends AbstractEntity{
     private String ownerCompanyId;
 
-
-
     private String ownerCompanyName;
     private String ownerCompanyLogoURL;
 
